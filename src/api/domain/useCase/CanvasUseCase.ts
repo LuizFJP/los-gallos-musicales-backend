@@ -1,4 +1,4 @@
-import { Redis } from "../../db/Redis";
+import { Redis } from "../../../db/Redis";
 
 export class CanvasUseCase {
     private static redisClient = Redis.get().getClient();

@@ -4,7 +4,7 @@ export class Redis {
     private static instance: Redis;
     private redisClient: RedisClientType;
 
-    public static get(): Redis {
+    public static getInstance(): Redis {
         if (!Redis.instance) {
             Redis.instance = new Redis();
         }
@@ -26,7 +26,7 @@ export class Redis {
         await this.redisClient?.disconnect();
     }
 
-    public getClient(): RedisClientType | null {
+    public getClient(): RedisClientType {
         return this.redisClient;
     }
 

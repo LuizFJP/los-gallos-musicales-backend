@@ -2,13 +2,14 @@ import * as socketIo from 'socket.io';
 import * as redis from "redis";
 import { Api } from '../Api';
 import { Websocket } from '../Websocket';
+import { Redis } from '../../db/Redis';
 
 
 export class Room {
-  private api: Api = Api.get();
-  private websocket: Websocket = Websocket.get();
+  private api: Api = Api.getInstance();
+  private websocket: Websocket = Websocket.getInstance();
   private room: string;
-  private redisClient: redis.RedisClientType;
+  private db: redis.RedisClientType = Redis.getInstance().getClient();
 
   constructor(room: string) {
     this.room = room;
@@ -25,13 +26,14 @@ export class Room {
       socket.join(this.room);
       console.log('a user connected to room: ', this.room);
 
-      socket.on('draw', (data: any) => {
-        socket.to(this.room).emit('draw', data)
+      socket.on(`${this.room} draw`, async (data: any) => {
+        await socket.to(this.room).emit(`${this.room} draw`, data);
+        console.log("it has drawn", `${this.room} draw`)
       });
 
-      socket.on('save', async (data: any) => {
-        console.log("called");
-        await this.redisClient?.SET(this.room, data);
+      socket.on(`${this.room} save`, async (data: any) => {
+        const s = await this.db?.set(this.room, data);
+        console.log("saved in redis", this.db);
       });
 
       socket.on('disconnect', () => {
