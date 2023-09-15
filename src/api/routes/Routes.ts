@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { CanvasRoute } from "./CanvasRoute";
+import { RoomRoute } from "./RoomRoute";
 
 export class Routes {
     private router: Router;
@@ -15,5 +16,6 @@ export class Routes {
 
     init() {
         new CanvasRoute(this);
+        new RoomRoute(this);
     }
 }

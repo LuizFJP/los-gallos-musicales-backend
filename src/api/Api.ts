@@ -10,7 +10,7 @@ export class Api {
     public server: Server;
     public PORT = 8100;
 
-    public static get(): Api {
+    public static getInstance(): Api {
         if (!Api.instance) {
             Api.instance = new Api();
         }
