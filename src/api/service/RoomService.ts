@@ -11,11 +11,15 @@ export class RoomService {
 
   public async createRoom(name: string): Promise<void> {
     await this.useCase.createRoom(name);
-    console.log(name + "created");
+    console.log(name + " created");
     return;
   }
 
   public async enterRoom(name: string): Promise<string | null> {
     return await this.useCase.enterRoom(name);
+  }
+
+  public async getAllRoom(): Promise<string[]> {
+    return await this.useCase.getAllRooms();
   }
 }
