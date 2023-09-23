@@ -9,15 +9,28 @@ export class RoomUseCase {
   }
 
   public async createRoom(room: string) {
-    return new Room(room);
+    try {
+      await this.db.set(room, "");
+      new Room(room);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   public async enterRoom(name: string) {
-    console.log(this.db);
     try {
       return await this.db.get(name);
     } catch (error) {
       return "";
+    }
+  }
+
+  public async getAllRooms(): Promise<string[]> {
+    try {
+      return await this.db.keys("*");
+    } catch (error) {
+      console.log("ERROR", error);
+      return [""];
     }
   }
 }

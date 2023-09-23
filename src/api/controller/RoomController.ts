@@ -21,4 +21,9 @@ export class RoomController {
 			res.json(data);
 		}
 	}
+
+	public async getAllRoom(req: Request, res: Response): Promise<void> {
+		const rooms = await this.service.getAllRoom();
+		res.json({rooms});
+	}
 }
