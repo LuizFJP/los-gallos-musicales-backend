@@ -1,4 +1,5 @@
 import { RedisClientType } from "redis";
+import { Room as RoomType } from "../entities/Room";
 import { Room } from "../../websocket/Room";
 
 export class RoomUseCase {
@@ -8,9 +9,12 @@ export class RoomUseCase {
     this.db = db;
   }
 
-  public async createRoom(room: string) {
+  public async createRoom(room: RoomType) {
     try {
-      await this.db.set(room, "");
+      const roomStringfied = JSON.stringify(room);
+      console.log(roomStringfied)
+      const roomBuffered= Buffer.from(roomStringfied).toString('base64');
+      await this.db.set(room.name, roomBuffered);
       new Room(room);
     } catch (error) {
       console.log(error);
@@ -19,7 +23,11 @@ export class RoomUseCase {
 
   public async enterRoom(name: string) {
     try {
-      return await this.db.get(name);
+      const raw = await this.db.get(name);
+      const roomString = Buffer.from(raw as string, 'base64').toString("binary");
+      const room = JSON.parse(roomString);
+      console.log(room);
+      return room;
     } catch (error) {
       return "";
     }

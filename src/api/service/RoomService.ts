@@ -1,4 +1,5 @@
 import { Redis } from "../../db/Redis";
+import { Room } from "../domain/entities/Room";
 import { RoomUseCase } from "../domain/useCase/RoomUseCase";
 
 export class RoomService {
@@ -9,9 +10,10 @@ export class RoomService {
     this.useCase = new RoomUseCase(Redis.getInstance().getClient());
   }
 
-  public async createRoom(name: string): Promise<void> {
-    await this.useCase.createRoom(name);
-    console.log(name + " created");
+  public async createRoom(room: Room): Promise<void> {
+    console.log(room)
+    await this.useCase.createRoom(room);
+    console.log(room.name + " created");
     return;
   }
 

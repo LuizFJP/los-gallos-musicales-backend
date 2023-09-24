@@ -17,8 +17,8 @@ export class RoomController {
 		if (!req.query.name) {
 			res.end();
 		} else {
-			const data = await this.service.enterRoom(req.query.name as string);
-			res.json(data);
+			const room = await this.service.enterRoom(req.query.name as string);
+			res.json(room);
 		}
 	}
 
