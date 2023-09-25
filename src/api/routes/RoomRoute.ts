@@ -13,6 +13,7 @@ export class RoomRoute {
 
     init() {
         const route = this.routes.getRouter();
+        route.use('/room', route);
 
         route.post('/create', async (req, res) => {
             console.log(req.body);
@@ -20,12 +21,16 @@ export class RoomRoute {
             await this.controller.createRoom(req,res);
         })
 
-        route.get('/room', async (req, res) => {
+        route.get('/', async (req, res) => {
             await this.controller.enterRoom(req, res);
         })
 
-        route.get('/room/all', async (req, res) => {
+        route.get('/all', async (req, res) => {
             await this.controller.getAllRoom(req, res);
         })
+    }
+    
+    getRouter(): Routes {
+        return this.routes;
     }
 }

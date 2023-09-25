@@ -25,7 +25,7 @@ export class Api {
         this.app = express();
         this.app.use(cors());
         this.app.use(express.json());
-        this.app.use('/', new Routes().getRouter());
+        this.app.use('/', Routes.getInstance().getRouter());
         this.server = createServer(this.app);
         this.server.listen(this.PORT);
     }
