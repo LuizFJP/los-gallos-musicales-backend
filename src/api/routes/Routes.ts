@@ -24,7 +24,7 @@ export class Routes {
     }
 
     init() {
-        // new RoomRoute(this);
+        new RoomRoute(this);
         new MusicRoute(this);
     }
 }

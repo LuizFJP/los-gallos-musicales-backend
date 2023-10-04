@@ -26,6 +26,7 @@ export class RoomRoute {
         })
 
         route.get('/all', async (req, res) => {
+            console.log(req);
             await this.controller.getAllRoom(req, res);
         })
     }
