@@ -23,8 +23,11 @@ export class Routes {
         return this.router;
     }
 
-    init() {
-        // new RoomRoute(this);
-        new MusicRoute(this);
+    async init() {
+        Promise.all(
+            [new MusicRoute(this),
+            new RoomRoute(this)]
+        )
+
     }
 }
