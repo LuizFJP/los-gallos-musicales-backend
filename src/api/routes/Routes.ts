@@ -24,14 +24,11 @@ export class Routes {
         return this.router;
     }
 
-    init() {
-        this.initMusicRoute();
-        this.initRoomRoute();
-    }
-    initRoomRoute() {
-        new RoomRoute(this);
-    }
-    initMusicRoute() {
-        new MusicRoute(this);
-    }
+    async init() {
+        Promise.all(
+            [new MusicRoute(this),
+            new RoomRoute(this)]
+        )
+
+
 }

@@ -65,6 +65,7 @@ export class RoomUseCase {
 
   public async getAllRooms(): Promise<string[]> {
     try {
+      console.log(await this.db.keys("*"));
       return await this.db.keys("*");
     } catch (error) {
       console.log("ERROR", error);
