@@ -29,6 +29,5 @@ export class Routes {
             [new MusicRoute(this),
             new RoomRoute(this)]
         )
-
-
+    }
 }
