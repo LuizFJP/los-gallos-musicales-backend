@@ -1,6 +1,7 @@
 import { Application, Router } from "express";
 import { RoomRoute } from "./RoomRoute";
 import { MusicRoute } from "./MusicRoute";
+import { Room } from "../websocket/Room";
 
 export class Routes {
     private router: Router;
@@ -24,7 +25,13 @@ export class Routes {
     }
 
     init() {
+        this.initMusicRoute();
+        this.initRoomRoute();
+    }
+    initRoomRoute() {
         new RoomRoute(this);
+    }
+    initMusicRoute() {
         new MusicRoute(this);
     }
 }
