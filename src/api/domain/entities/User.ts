@@ -3,5 +3,5 @@ export type Player = {
   penalties?: number;
   score?: number;
   wins?: number;
-  img?: string; 
+  avatar?: string; 
 }
