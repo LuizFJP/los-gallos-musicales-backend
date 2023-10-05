@@ -11,11 +11,19 @@ datasource db {
 }
 
 model Genre {
-  id   String @id @default(cuid()) @map("_id") @db.ObjectId
-  name String
+  id       String     @id @default(cuid()) @map("_id") @db.ObjectId
+  name     String     @unique
+  Playlist Playlist[]
 }
 
 model Playlist {
-  id   String @id @default(cuid()) @map("_id") @db.ObjectId
-  
+  id           String   @id @default(cuid()) @map("_id") @db.ObjectId
+  genre        Genre    @relation(fields: [genre_id], references: [id])
+  genre_id     String   @db.ObjectId
+  playlistUrls String[]
+}
+
+model Image {
+  id      String     @id @default(cuid()) @map("_id") @db.ObjectId
+  url     String     @unique
 }
