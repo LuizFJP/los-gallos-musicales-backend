@@ -21,7 +21,7 @@ export class RoomRoute {
             await this.controller.createRoom(req,res);
         })
 
-        route.get('/', async (req, res) => {
+        route.post('/join', async (req, res) => {
             await this.controller.enterRoom(req, res);
         })
 
