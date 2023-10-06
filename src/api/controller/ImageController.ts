@@ -10,7 +10,11 @@ export class ImageController {
 		this.imageService = new ImageService(this.imageRepository);
 	}
 
-	public async uploadImage(req: Request, res: Response): Promise<void> {
-		await this.imageService.uploadImage();
+	public async uploadImage(imagePath: string): Promise<void> {
+		await this.imageService.uploadImage(imagePath);
+	}
+
+	public async downloadAllImages(): Promise<any> {
+		return await this.imageService.downloadAllImages();
 	}
 }
