@@ -1,6 +1,6 @@
 import { Player } from "./User";
 
-export type Room = {
+export interface Room {
   name: string;
   canvas?: string; 
   players?: Player[];

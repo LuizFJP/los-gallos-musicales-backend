@@ -11,6 +11,6 @@ export class ImageController {
 	}
 
 	public async uploadImage(req: Request, res: Response): Promise<void> {
-		new 
+		await this.imageService.uploadImage(req.file.path);
 	}
 }

@@ -1,4 +1,4 @@
-import { CreateImageDto } from "../domain/dto/image/create-image";
+import { CreateImageDto } from "../domain/dto/image/createImage";
 import { PrismaService } from "../service/PrismaService";
 import { EntityRepository } from "./protocols/EntityRepository";
 

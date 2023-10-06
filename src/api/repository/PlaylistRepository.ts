@@ -1,41 +1,30 @@
 import { EntityRepository } from "./protocols/EntityRepository";
-import { CreatePlaylistDto } from "../domain/dto/playlist/create-playlist";
-import { UpdatePlaylistDto } from "../domain/dto/playlist/update-playlist";
-import { PrismaService } from "../service/PrismaService";
+import { CreatePlaylistDto } from "../domain/dto/playlist/createPlaylist";
+import { UpdatePlaylistDto } from "../domain/dto/playlist/updatePlaylist";
+import { PlaylistModel } from "../../db/mongo/schema/schemas";
 
 export class PlaylistRepository implements EntityRepository {
-  private prismaService: PrismaService;
 
-  constructor() {
-    this.prismaService = new PrismaService();
-  }
+  constructor() {}
 
-  create(playlistDto: CreatePlaylistDto): Promise<any> {
-    return this.prismaService.playlist.create({
-      data: playlistDto,
-    });
+  async create(playlistDto: CreatePlaylistDto): Promise<any> {
+    const playlist = new PlaylistModel(playlistDto);
+    return await playlist.save();
   }
 
   findById(id: string): Promise<any> {
-    return this.prismaService.playlist.findUniqueOrThrow({
-      where: { id },
-    });
+    throw new Error("Method not implemented.");
   }
 
   findAll(): Promise<any[]> {
-    return this.prismaService.playlist.findMany();
+    throw new Error("Method not implemented.");
   }
 
   delete(id: string): Promise<any> {
-    return this.prismaService.playlist.delete({
-      where: { id },
-    });
+    throw new Error("Method not implemented.");
   }
 
   update(id: string, updatePlaylistDto: UpdatePlaylistDto): Promise<any> {
-    return this.prismaService.playlist.update({
-      where: { id },
-      data: updatePlaylistDto,
-    });
+    throw new Error("Method not implemented.");
   }
 }

@@ -1,4 +1,4 @@
-export type Player = {
+export interface Player {
   userName?: string;
   penalties?: number;
   score?: number;
