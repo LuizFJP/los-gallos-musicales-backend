@@ -4,6 +4,7 @@ import { Genre } from '../../../api/domain/entities/Genre';
 import { Playlist } from '../../../api/domain/entities/Playlist';
 
 const imageSchema = new Schema<Image>({
+  id: { type: Number, required: true },
   path: { type: String, required: true },
 });
 
