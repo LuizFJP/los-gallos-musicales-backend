@@ -3,6 +3,7 @@ import { multerConfig } from "../../config/MulterConfig";
 import { ImageController } from "../controller/ImageController";
 import { Routes } from "./Routes";
 import multer from "multer";
+import { CreateImageDto } from "../domain/dto/image/createImage";
 export class ImageRoute {
   private routes: Routes;
   private imageController: ImageController;
@@ -24,8 +25,12 @@ export class ImageRoute {
       res: Response
     ) => {
       console.log(req.file);
-      await this.imageController.uploadImage(req.file?.path!);
+      const dto: CreateImageDto = {
+        path: req.file?.path!,
+      }
+      await this.imageController.uploadImage(dto);
       res.status(200).json({ message: "Upload realizado com sucesso." });
+      res.end();
     };
 
     route.post("/upload", uploadMiddleware, uploadHandler);

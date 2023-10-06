@@ -1,3 +1,3 @@
 export interface Image {
-  paths: string[];
+  path: string;
 }

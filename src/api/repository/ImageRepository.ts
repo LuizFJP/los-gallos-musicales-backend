@@ -1,32 +1,34 @@
 import { CreateImageDto } from "../domain/dto/image/createImage";
-import { PrismaService } from "../service/PrismaService";
 import { EntityRepository } from "./protocols/EntityRepository";
+import { ImageModel } from "../../db/mongo/schema/schemas";
 
 export class ImageRepository implements EntityRepository {
-  private prismaService: PrismaService;
-
+  private imageModel: any;
   constructor() {
-    this.prismaService = new PrismaService();
+    this.imageModel = ImageModel;
   }
-  create(createImageDto: CreateImageDto): Promise<any> {
-    return this.prismaService.image.create({
-      data: createImageDto,
-    });
+
+  async create(createImageDto: CreateImageDto): Promise<any> {
+    try {
+      return await this.imageModel.create({path: createImageDto.path});
+    } catch (error) {
+      console.log(error);
+    }
   }
-  findAll(): Promise<any[]> {
-    return this.prismaService.image.findMany();
+
+  async findAll(): Promise<any[]> {
+    return await ImageModel.find();
   }
-  findById(id: string): Promise<any> {
-    return this.prismaService.image.findUniqueOrThrow({
-      where: { id },
-    });
+
+  async findById(id: string): Promise<any> {
+    return await ImageModel.findById(id);
   }
-  update(id: string, updateImageDto: any): Promise<any> {
-    throw new Error("You can not update a image");
+
+  async update(id: string, updateImageDto: any): Promise<any> {
+    return await ImageModel.findByIdAndUpdate(id, updateImageDto);
   }
-  delete(id: string): Promise<any> {
-    return this.prismaService.image.delete({
-      where: { id },
-    });
+
+  async delete(id: string): Promise<any> {
+    return await ImageModel.findByIdAndDelete(id);
   }
 }

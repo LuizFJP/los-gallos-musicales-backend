@@ -4,7 +4,7 @@ import { Genre } from '../../../api/domain/entities/Genre';
 import { Playlist } from '../../../api/domain/entities/Playlist';
 
 const imageSchema = new Schema<Image>({
-  paths: { type: [String], required: true },
+  path: { type: String, required: true },
 });
 
 export const ImageModel = model<Image>('Image', imageSchema);

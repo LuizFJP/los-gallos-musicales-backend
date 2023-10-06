@@ -1,4 +1,5 @@
 import { EntityRepository } from "../repository/protocols/EntityRepository";
+import { CreateImageDto } from '../domain/dto/image/createImage';
 
 export class ImageService {
   private imageRepository: EntityRepository;
@@ -7,8 +8,8 @@ export class ImageService {
     this.imageRepository = imageRepository;
   }
 
-  public async uploadImage(imagePath: string): Promise<void> {
-    await this.imageRepository.create({ path: imagePath });
+  public async uploadImage(createImageDto: CreateImageDto): Promise<void> {
+    return await this.imageRepository.create(createImageDto);
   }
 
   public async downloadAllImages(): Promise<any> {
