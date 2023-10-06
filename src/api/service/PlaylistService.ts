@@ -9,6 +9,6 @@ export class PlaylistService {
   }
 
   public async createPlaylist(playlist: Playlist): Promise<void> {
-    await this.playlistRepository.create({ genre: {id: playlist.genre, genre: }, playlist: playlist.playlist  });
+    // await this.playlistRepository.create({ genre: {id: playlist.genre, genre: }, playlist: playlist.playlist  });
   }
 }

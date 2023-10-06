@@ -10,12 +10,14 @@ const imageSchema = new Schema<Image>({
 export const ImageModel = model<Image>('Image', imageSchema);
 
 const genreSchema = new Schema<Genre>({
+  id: { type: Number, required: true },
   name: { type: String, required: true },
 });
 
 export const GenreModel = model<Genre>('Genre', genreSchema);
 
 const playlistSchema = new Schema<Playlist>({
+  id: { type: Number, required: true },
   genre: { type: genreSchema, required: true },
   playlistsUrl: { type: [String], required: true },
 });

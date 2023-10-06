@@ -5,7 +5,7 @@ export class MusicService {
   public async getSong(name: string) {
     console.log("testeee")
     const ytmusic = await new YTMusic().initialize();
-    const result = await ytmusic?.getSong(name);
+    const result = await ytmusic?.getPlaylist(name);
 
     return result;
   }
