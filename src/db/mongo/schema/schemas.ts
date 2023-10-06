@@ -4,18 +4,21 @@ import { Genre } from '../../../api/domain/entities/Genre';
 import { Playlist } from '../../../api/domain/entities/Playlist';
 
 const imageSchema = new Schema<Image>({
+  id: { type: Number, required: true },
   paths: { type: [String], required: true },
 });
 
 export const ImageModel = model<Image>('Image', imageSchema);
 
 const genreSchema = new Schema<Genre>({
+  id: { type: Number, required: true },
   name: { type: String, required: true },
 });
 
 export const GenreModel = model<Genre>('Genre', genreSchema);
 
 const playlistSchema = new Schema<Playlist>({
+  id: { type: Number, required: true },
   genre: { type: genreSchema, required: true },
   playlistsUrl: { type: [String], required: true },
 });

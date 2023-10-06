@@ -1,32 +1,26 @@
-import { CreateImageDto } from "../domain/dto/image/createImage";
-import { PrismaService } from "../service/PrismaService";
 import { EntityRepository } from "./protocols/EntityRepository";
 
 export class ImageRepository implements EntityRepository {
-  private prismaService: PrismaService;
 
   constructor() {
-    this.prismaService = new PrismaService();
   }
-  create(createImageDto: CreateImageDto): Promise<any> {
-    return this.prismaService.image.create({
-      data: createImageDto,
-    });
+  async create(): Promise<any> {
+    throw new Error("Method not implemented.");
   }
-  findAll(): Promise<any[]> {
-    return this.prismaService.image.findMany();
-  }
+
   findById(id: string): Promise<any> {
-    return this.prismaService.image.findUniqueOrThrow({
-      where: { id },
-    });
+    throw new Error("Method not implemented.");
   }
-  update(id: string, updateImageDto: any): Promise<any> {
-    throw new Error("You can not update a image");
+
+  findAll(): Promise<any[]> {
+    throw new Error("Method not implemented.");
   }
+
   delete(id: string): Promise<any> {
-    return this.prismaService.image.delete({
-      where: { id },
-    });
+    throw new Error("Method not implemented.");
+  }
+
+  update(id: string): Promise<any> {
+    throw new Error("Method not implemented.");
   }
 }

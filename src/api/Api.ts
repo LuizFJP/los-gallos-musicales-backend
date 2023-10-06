@@ -37,5 +37,4 @@ export class Api {
     getApp(): Application | null{
         return this.app;
     }
-
 }
