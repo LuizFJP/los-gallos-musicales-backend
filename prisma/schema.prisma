@@ -24,6 +24,6 @@ model Playlist {
 }
 
 model Image {
-  id      String     @id @default(cuid()) @map("_id") @db.ObjectId
-  url     String     @unique
+  id       String      @id @default(cuid()) @map("_id") @db.ObjectId
+  path     String          
 }

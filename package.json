@@ -5,14 +5,17 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx sucrase-node src/App.ts --watch"
+    "dev": "nodemon src/App.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/express": "^4.17.17",
+    "@types/multer": "^1.4.8",
     "@types/socket.io": "^3.0.2",
+    "multer": "1.4.5-lts.1",
+    "nodemon": "^3.0.1",
     "sucrase": "^3.34.0"
   },
   "dependencies": {
