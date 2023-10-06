@@ -10,4 +10,8 @@ export class ImageService {
   public async uploadImage(imagePath: string): Promise<void> {
     await this.imageRepository.create({ path: imagePath });
   }
+
+  public async downloadAllImages(): Promise<any> {
+    return await this.imageRepository.findAll();
+  }
 }

@@ -17,15 +17,22 @@ export class ImageRoute {
     const route = this.routes.getRouter();
     route.use("/image", route);
 
-    const uploadMiddleware = multer(multerConfig).single("image");
+    const uploadMiddleware = multer(multerConfig).single("file");
 
-    const uploadHandler: RequestHandler = async (req: Request, res: Response) => {
-    console.log(req.file);
-    //   await this.imageController.uploadImage();
+    const uploadHandler: RequestHandler = async (
+      req: Request,
+      res: Response
+    ) => {
+      console.log(req.file);
+      await this.imageController.uploadImage(req.file?.path!);
+      res.status(200).json({ message: "Upload realizado com sucesso." });
     };
 
     route.post("/upload", uploadMiddleware, uploadHandler);
 
+    route.get("/download",(request: Request, response: Response) => {
+        
+    })
     return route;
   }
 
