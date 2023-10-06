@@ -1,12 +1,23 @@
-import YTMusic from "ytmusic-api";
+import 'dotenv/config';
+import { google } from 'googleapis';
+import { PlaylistParser } from '../parser/PlaylistParser';
+import { Playlist } from './protocols/Playlist';
 
 export class MusicService {
   
-  public async getSong(name: string) {
-    console.log("testeee")
-    const ytmusic = await new YTMusic().initialize();
-    const result = await ytmusic?.getPlaylist(name);
+  public async getPlaylistById(id: string) {
+    const youtube = google.youtube({
+      version: 'v3',
+      auth: process.env.YOUTUBE_API_KEY
+    });
 
-    return result;
+    const response = await youtube.playlistItems.list({
+      part: ['snippet'],
+      playlistId: id,
+      maxResults: 100
+    });
+
+    return PlaylistParser.parse(response.data.items as Playlist[]);
   }
 }
+

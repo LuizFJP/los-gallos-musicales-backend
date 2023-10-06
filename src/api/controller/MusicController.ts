@@ -9,7 +9,7 @@ export class MusicController {
   }
 
   public async getSong(req: Request, res: Response): Promise<void> {
-    const music = await this.service.getSong(req.query.name as string);
+    const music = await this.service.getPlaylistById(req.query.name as string);
     res.json(music);
   }
 }

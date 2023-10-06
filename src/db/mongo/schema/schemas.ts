@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Document, Schema, model } from 'mongoose';
 import { Image } from '../../../api/domain/entities/Image';
 import { Genre } from '../../../api/domain/entities/Genre';
 import { Playlist } from '../../../api/domain/entities/Playlist';

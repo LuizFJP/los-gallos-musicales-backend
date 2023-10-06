@@ -4,6 +4,9 @@ export class ImageRepository implements EntityRepository {
 
   constructor() {
   }
+  findByName(name: string): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
   async create(): Promise<any> {
     throw new Error("Method not implemented.");
   }
