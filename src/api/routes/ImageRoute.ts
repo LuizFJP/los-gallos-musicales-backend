@@ -32,20 +32,19 @@ export class ImageRoute {
         size: req.file?.size as number,
       }
       await this.imageController.uploadImage(dto);
-      // const b64 = Buffer.from(rest.Body.toString('base64');
-      // CHANGE THIS IF THE IMAGE YOU ARE WORKING WITH IS .jpg OR WHATEVER
-      // const mimeType = 'image/png'; // e.g., image/png
-      
-      // res.send(`<img src="data:${mimeType};base64,${b64}" />`);
-      res.status(200).json({ message: "Upload realizado com sucesso." });
+      res.status(201).json({ message: "Upload realizado com sucesso." });
       res.end();
     };
 
     route.post("/upload", uploadMiddleware, uploadHandler);
-
-    route.get("/download",(request: Request, response: Response) => {
-        
-    })
+    const downloadHandler: RequestHandler = async (
+      req: Request,
+      res: Response
+    ) => {
+      const images = JSON.stringify(await this.imageController.downloadAllImages());
+      res.status(200).json(images);
+    }
+    route.get("/download", downloadHandler);
     return route;
   }
 

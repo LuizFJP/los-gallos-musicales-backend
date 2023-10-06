@@ -1,5 +1,6 @@
 import { EntityRepository } from "../repository/protocols/EntityRepository";
 import { CreateImageDto } from '../domain/dto/image/createImage';
+import { Image } from "../domain/entities/Image";
 
 export class ImageService {
   private imageRepository: EntityRepository;
@@ -13,6 +14,10 @@ export class ImageService {
   }
 
   public async downloadAllImages(): Promise<any> {
-    return await this.imageRepository.findAll();
+    const images = await this.imageRepository.findAll();
+    const bufferedImages = images.map((image: Image) => {
+      return {base64: Buffer.from(image.buffer).toString('base64'), mimetype: image.mimetype}
+    })
+    return bufferedImages;
   }
 }

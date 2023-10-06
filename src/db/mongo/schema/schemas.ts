@@ -19,7 +19,6 @@ export class MongooseSchema {
 
   public getImageModel() {
     if (!this.imageModel) {
-      console.log("nao tem schema nem model")
       this.imageSchema = new Schema<Image>({
         buffer: { type: Buffer, required: true },
         mimetype: { type: String, required: true },
