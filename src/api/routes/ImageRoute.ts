@@ -26,9 +26,17 @@ export class ImageRoute {
     ) => {
       console.log(req.file);
       const dto: CreateImageDto = {
-        path: req.file?.path!,
+        buffer: req.file?.buffer as Buffer,
+        mimetype: req.file?.mimetype as string,
+        originalname: req.file?.originalname as string,
+        size: req.file?.size as number,
       }
       await this.imageController.uploadImage(dto);
+      // const b64 = Buffer.from(rest.Body.toString('base64');
+      // CHANGE THIS IF THE IMAGE YOU ARE WORKING WITH IS .jpg OR WHATEVER
+      // const mimeType = 'image/png'; // e.g., image/png
+      
+      // res.send(`<img src="data:${mimeType};base64,${b64}" />`);
       res.status(200).json({ message: "Upload realizado com sucesso." });
       res.end();
     };

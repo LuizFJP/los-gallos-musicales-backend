@@ -1,16 +1,9 @@
-import { Options, diskStorage } from "multer";
+import { Options, diskStorage, memoryStorage } from "multer";
 import { resolve } from "path";
 
 export const multerConfig: Options = {
-  dest: resolve(__dirname, '..', '..','uploads', 'avatar_images'),
-  storage: diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, resolve(__dirname, '..', '..','uploads'));
-    },
-    filename: (req, file, cb) => {
-      cb(null, `${Date.now()}-${file.originalname}`);
-    },
-  }),
+  dest: resolve(__dirname, '..', '..','uploads'),
+  storage: memoryStorage(),
   limits: {
     fileSize: 1024 * 1024 * 5,
   },

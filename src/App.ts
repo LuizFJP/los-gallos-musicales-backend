@@ -11,8 +11,9 @@ class App {
 
   constructor() {
     this.mongo = new Mongo();
-    this.redis.start();
+    this.mongo.connect()
     this.api.start();
+    this.redis.start();
     this.websocket.start();
   }
 }

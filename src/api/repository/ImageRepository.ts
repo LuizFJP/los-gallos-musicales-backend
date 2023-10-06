@@ -1,34 +1,33 @@
+import { MongooseSchema } from "../../db/mongo/schema/schemas";
 import { CreateImageDto } from "../domain/dto/image/createImage";
 import { EntityRepository } from "./protocols/EntityRepository";
-import { ImageModel } from "../../db/mongo/schema/schemas";
-
 export class ImageRepository implements EntityRepository {
   private imageModel: any;
   constructor() {
-    this.imageModel = ImageModel;
+    this.imageModel = new MongooseSchema().getImageModel();
   }
 
   async create(createImageDto: CreateImageDto): Promise<any> {
     try {
-      return await this.imageModel.create({path: createImageDto.path});
+      return await this.imageModel.create(createImageDto);
     } catch (error) {
       console.log(error);
     }
   }
 
   async findAll(): Promise<any[]> {
-    return await ImageModel.find();
+    return await this.imageModel.find();
   }
 
   async findById(id: string): Promise<any> {
-    return await ImageModel.findById(id);
+    return await this.imageModel.findById(id);
   }
 
   async update(id: string, updateImageDto: any): Promise<any> {
-    return await ImageModel.findByIdAndUpdate(id, updateImageDto);
+    return await this.imageModel.findByIdAndUpdate(id, updateImageDto);
   }
 
   async delete(id: string): Promise<any> {
-    return await ImageModel.findByIdAndDelete(id);
+    return await this.imageModel.findByIdAndDelete(id);
   }
 }
