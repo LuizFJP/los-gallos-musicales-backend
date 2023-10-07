@@ -4,9 +4,6 @@ import { EntityRepository } from "./protocols/EntityRepository";
 
 export class ImageRepository implements EntityRepository {
   constructor() { }
-  findByName(getByName: any): Promise<any> {
-    throw new Error("Method not implemented.");
-  }
 
   async create(createImageDto: CreateImageDto): Promise<any> {
     try {
@@ -30,5 +27,9 @@ export class ImageRepository implements EntityRepository {
 
   async delete(id: string): Promise<any> {
     return await imageModel.findByIdAndDelete(id);
+  }
+
+  findByName(getByName: any): Promise<any> {
+    throw new Error("Method not implemented.");
   }
 }

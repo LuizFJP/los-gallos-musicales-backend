@@ -33,7 +33,6 @@ export class ImageRoute {
       }
       await this.imageController.uploadImage(dto);
       res.status(201).json({ message: "Upload realizado com sucesso." });
-      res.end();
     };
 
     route.post("/upload", uploadMiddleware, uploadHandler);

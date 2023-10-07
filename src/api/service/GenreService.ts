@@ -10,8 +10,6 @@ export class GenreService {
   }
   
   public async getGenres() {
-    this.genreRepository.findAll
-
     return this.genreRepository.findAll();
   }
 }

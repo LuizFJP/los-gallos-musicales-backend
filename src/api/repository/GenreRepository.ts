@@ -17,7 +17,7 @@ export class GenreRepository implements EntityRepository {
     throw new Error("Method not implemented.");
   }
 
-  async findAll(): Promise<any[]> {
+  async findAll(): Promise<any> {
     return await genreModel.find();
   }
 

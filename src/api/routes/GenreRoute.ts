@@ -16,7 +16,7 @@ export class GenreRoute {
         route.use('/genre', route);
 
         route.get('/all', async (req, res) => {
-            const genres = await this.controller.getGenres(req,res);
+            const genres = await this.controller.getGenres();
             res.json(genres);
         })
     }
