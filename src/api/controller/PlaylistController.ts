@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { PlaylistRepository } from "../repository/PlaylistRepository";
 import { EntityRepository } from "../repository/protocols/EntityRepository";
 import { PlaylistService } from "../service/PlaylistService";
+import { ListPlaylistDto } from "../domain/dto/playlist/listPlaylist";
 
 export class PlaylistController {
 	private playlistService: PlaylistService;
@@ -12,9 +13,8 @@ export class PlaylistController {
 		this.playlistService = new PlaylistService(this.playlistRepository);
 	}
 
-	public async getPlaylist(req: Request, res: Response): Promise<void> {
-		const playlists = await this.playlistService.getPlaylist(req.query?.name as string);
-		res.send(playlists);
+	public async getPlaylist(req: Request, res: Response): Promise<ListPlaylistDto[]> {
+		return await this.playlistService.getPlaylist(req.query?.name as string);
 	}
 
 }

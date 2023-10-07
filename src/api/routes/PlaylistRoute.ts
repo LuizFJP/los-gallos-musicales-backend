@@ -16,7 +16,8 @@ export class PlaylistRoute {
         route.use('/playlist', route);
 
         route.get('/', async (req, res) => {
-            await this.controller.getPlaylist(req,res);
+            const playlists = await this.controller.getPlaylist(req,res);
+            res.send(playlists);
         })
     }
 }

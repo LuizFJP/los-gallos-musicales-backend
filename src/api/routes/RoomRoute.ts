@@ -16,8 +16,6 @@ export class RoomRoute {
         route.use('/room', route);
 
         route.post('/create', async (req, res) => {
-            console.log(req.body);
-
             await this.controller.createRoom(req,res);
         })
 
@@ -26,7 +24,6 @@ export class RoomRoute {
         })
 
         route.get('/all', async (req, res) => {
-            console.log(req);
             await this.controller.getAllRoom(req, res);
         })
     }

@@ -1,4 +1,3 @@
-import { Request, Response } from "express";
 import { GenreService } from "../service/GenreService";
 
 export class GenreController {

@@ -24,7 +24,6 @@ export class ImageRoute {
       req: Request,
       res: Response
     ) => {
-      console.log(req.file);
       const dto: CreateImageDto = {
         buffer: req.file?.buffer as Buffer,
         mimetype: req.file?.mimetype as string,
