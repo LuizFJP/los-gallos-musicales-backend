@@ -1,10 +1,10 @@
 import { EntityRepository } from "./protocols/EntityRepository";
 import { UpdatePlaylistDto } from "../domain/dto/playlist/updatePlaylist";
-import { GenreModel, PlaylistModel } from "../../db/mongo/schema/schemas";
+import { genreModel } from "../../db/mongo/schema/schemas";
 
 export class GenreRepository implements EntityRepository {
-
   constructor() {}
+
   async findByName(name: string): Promise<any> {
     throw new Error("Method not implemented.");
   }
@@ -18,7 +18,7 @@ export class GenreRepository implements EntityRepository {
   }
 
   async findAll(): Promise<any[]> {
-    return await GenreModel.find({});
+    return await genreModel.find();
   }
 
   delete(id: string): Promise<any> {

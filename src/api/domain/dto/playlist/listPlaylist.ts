@@ -1,4 +1,4 @@
 export type ListPlaylistDto = {
-  title: string;
-  playlistURLs: {name: string, url: string}[];
+  name: string, 
+  videoId: string;
 }

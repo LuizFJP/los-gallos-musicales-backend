@@ -1,29 +1,34 @@
+import { imageModel } from "../../db/mongo/schema/schemas";
+import { CreateImageDto } from "../domain/dto/image/createImage";
 import { EntityRepository } from "./protocols/EntityRepository";
 
 export class ImageRepository implements EntityRepository {
-
-  constructor() {
-  }
-  findByName(name: string): Promise<any> {
-    throw new Error("Method not implemented.");
-  }
-  async create(): Promise<any> {
+  constructor() { }
+  findByName(getByName: any): Promise<any> {
     throw new Error("Method not implemented.");
   }
 
-  findById(id: string): Promise<any> {
-    throw new Error("Method not implemented.");
+  async create(createImageDto: CreateImageDto): Promise<any> {
+    try {
+      return await imageModel.create(createImageDto);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  findAll(): Promise<any[]> {
-    throw new Error("Method not implemented.");
+  async findAll(): Promise<any[]> {
+    return await imageModel.find();
   }
 
-  delete(id: string): Promise<any> {
-    throw new Error("Method not implemented.");
+  async findById(id: string): Promise<any> {
+    return await imageModel.findById(id);
   }
 
-  update(id: string): Promise<any> {
-    throw new Error("Method not implemented.");
+  async update(id: string, updateImageDto: any): Promise<any> {
+    return await imageModel.findByIdAndUpdate(id, updateImageDto);
+  }
+
+  async delete(id: string): Promise<any> {
+    return await imageModel.findByIdAndDelete(id);
   }
 }

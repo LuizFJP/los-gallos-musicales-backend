@@ -1,15 +1,21 @@
-import { ImageRepository } from "../repository/ImageRepository";
-import { ImageService } from "../service/ImageService";
+import { Request, Response } from "express";
+import { PlaylistRepository } from "../repository/PlaylistRepository";
+import { EntityRepository } from "../repository/protocols/EntityRepository";
+import { PlaylistService } from "../service/PlaylistService";
 
-export class ImageController {
-  private imageService: ImageService;
-  private imageRepository: ImageRepository;
+export class PlaylistController {
+	private playlistService: PlaylistService;
+	private playlistRepository: EntityRepository;
 
 	constructor() {
-    this.imageRepository = new ImageRepository();
-		this.imageService = new ImageService(this.imageRepository);
+		this.playlistRepository = new PlaylistRepository();
+		this.playlistService = new PlaylistService(this.playlistRepository);
 	}
 
-	public async uploadImage(req: Request, res: Response): Promise<void> {
+	public async getPlaylist(req: Request, res: Response): Promise<void> {
+		const playlists = await this.playlistService.getPlaylist(req.query?.name as string);
+		res.send(playlists);
 	}
+
 }
+

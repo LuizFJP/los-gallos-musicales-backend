@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { RoomRoute } from "./RoomRoute";
-import { MusicRoute } from "./MusicRoute";
 import { ImageRoute } from "./ImageRoute";
 import { GenreRoute } from "./GenreRoute";
+import { PlaylistRoute } from "./PlaylistRoute";
 
 export class Routes {
   private router: Router;
@@ -28,7 +28,7 @@ export class Routes {
   async init() {
     Promise.all([
       new GenreRoute(this),
-      new MusicRoute(this),
+      new PlaylistRoute(this),
       new RoomRoute(this),
       new ImageRoute(this),
     ]);

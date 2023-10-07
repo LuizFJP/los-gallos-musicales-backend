@@ -1,4 +1,6 @@
 export interface Image {
-  id: number;
-  paths: string[];
+  mimetype: string;
+  buffer: Buffer;
+  originalname: string;
+  size: number;
 }

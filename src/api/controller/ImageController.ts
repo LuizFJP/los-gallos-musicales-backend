@@ -1,3 +1,4 @@
+import { CreateImageDto } from "../domain/dto/image/createImage";
 import { ImageRepository } from "../repository/ImageRepository";
 import { ImageService } from "../service/ImageService";
 
@@ -10,8 +11,8 @@ export class ImageController {
 		this.imageService = new ImageService(this.imageRepository);
 	}
 
-	public async uploadImage(imagePath: string): Promise<void> {
-		await this.imageService.uploadImage(imagePath);
+	public async uploadImage(createImageDto: CreateImageDto): Promise<void> {
+		return await this.imageService.uploadImage(createImageDto);
 	}
 
 	public async downloadAllImages(): Promise<any> {

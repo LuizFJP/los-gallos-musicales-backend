@@ -1,3 +1,6 @@
 export type CreateImageDto = { 
-  path: string;
+  mimetype: string;
+  buffer: Buffer;
+  originalname: string;
+  size: number;
 }

@@ -1,26 +1,30 @@
-import { Document, Schema, model } from 'mongoose';
-import { Image } from '../../../api/domain/entities/Image';
-import { Genre } from '../../../api/domain/entities/Genre';
-import { Playlist } from '../../../api/domain/entities/Playlist';
+import { Schema, model } from "mongoose";
+import { Image } from "../../../api/domain/entities/Image";
+import { Genre } from "../../../api/domain/entities/Genre";
+import { Playlist } from "../../../api/domain/entities/Playlist";
 
 const imageSchema = new Schema<Image>({
-  id: { type: Number, required: true },
-  paths: { type: [String], required: true },
-});
+    buffer: { type: Buffer, required: true },
+    mimetype: { type: String, required: true },
+    originalname: { type: String, required: true },
+    size: { type: Number, required: true },
+  });
 
-export const ImageModel = model<Image>('Image', imageSchema);
+  export const imageModel = model<Image>("Image", imageSchema);
 
-const genreSchema = new Schema<Genre>({
-  id: { type: Number, required: true },
-  name: { type: String, required: true },
-});
+  const genreSchema = new Schema<Genre>({
+    id: { type: Number, required: true },
+    name: { type: String, required: true },
+  });
 
-export const GenreModel = model<Genre>('Genre', genreSchema);
+  export const genreModel = model<Genre>("Genres", genreSchema);
 
-const playlistSchema = new Schema<Playlist>({
-  id: { type: Number, required: true },
-  genre: { type: genreSchema, required: true },
-  playlistsUrl: { type: [String], required: true },
-});
+  const playlistSchema = new Schema<Playlist>({
+    id: { type: Number, required: true },
+    genre: { type: genreSchema, required: true },
+    playlistsUrl: { type: [String], required: true },
+  });
 
-export const PlaylistModel = model<Playlist>('Playlist', playlistSchema);
+  export const playlistModel = model<Playlist>("Playlist", playlistSchema);
+
+

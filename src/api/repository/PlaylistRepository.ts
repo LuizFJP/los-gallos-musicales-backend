@@ -1,18 +1,18 @@
 import { EntityRepository } from "./protocols/EntityRepository";
 import { CreatePlaylistDto } from "../domain/dto/playlist/createPlaylist";
 import { UpdatePlaylistDto } from "../domain/dto/playlist/updatePlaylist";
-import { PlaylistModel } from "../../db/mongo/schema/schemas";
+import { playlistModel } from "../../db/mongo/schema/schemas";
+import { Playlist } from "../domain/entities/Playlist";
 
 export class PlaylistRepository implements EntityRepository {
 
   constructor() {}
-  async findByName(name: string): Promise<any> {
-    return await PlaylistModel.find({ 'genre.name': `${name}` }).exec();
+  async findByName(name: string): Promise<Playlist[]> {
+    return await playlistModel.find({'genre.name': `${name}`}).exec() as Playlist[];
   }
 
   async create(playlistDto: CreatePlaylistDto): Promise<any> {
-    const playlist = new PlaylistModel(playlistDto);
-    return await playlist.save();
+    throw new Error("Method not implemented.");
   }
 
   findById(id: string): Promise<any> {
