@@ -8,8 +8,7 @@ export class GenreController {
     this.service = new GenreService();
   }
 
-  public async getGenres(req: Request, res: Response): Promise<void> {
-    const genres = await this.service.getGenres();
-    res.json(genres);
+  public async getGenres(req: Request, res: Response): Promise<any> {
+    return await this.service.getGenres();
   }
 }
