@@ -1,19 +1,22 @@
-import { Api } from "./api/Api";
-import { Redis } from "./db/Redis"
-import { Websocket } from "./api/Websocket";
-import { Mongo } from "./db/Mongo";
+import { Api } from "./infra/websocket/Api";
+import { Redis } from "./infra/data/data-sources/redis/Redis"
+import { Websocket } from "./infra/websocket/Websocket";
+import { Mongo } from "./infra/data/data-sources/mongodb/Mongo";
 
 class App {
-  private api: Api = Api.getInstance();
-  private websocket: Websocket = Websocket.getInstance();
-  private redis: Redis = Redis.getInstance();
+  private api: Api;
+  private websocket: Websocket;
+  private redis: Redis = new Redis();
   private mongo: Mongo;
 
   constructor() {
+    this.redis.start();
+    this.redis.connect();
     this.mongo = new Mongo();
     this.mongo.connect()
+    this.api = new Api(this.redis);
     this.api.start();
-    this.redis.start();
+    this.websocket = new Websocket(this.api);
     this.websocket.start();
   }
 }
