@@ -1,9 +1,9 @@
 import { google } from "googleapis";
-import { PlaylistParser } from "../../../infra/http/youtube/parser/PlaylistParser";
+import { PlaylistParser } from "../../../infra/http/youtube/parser/playlist-parser";
 import { ListPlaylistDto } from "../../dto/playlist/listPlaylist";
 import { PlaylistRepository } from "../../interfaces/repositories/playlist-repository";
 import { GetPlaylistsUseCase } from "../../interfaces/use-cases/playlist/get-playlists-use-case";
-import { Playlist } from "../../../infra/http/youtube/interfaces/playlist/Playlist";
+import { Playlist } from "../../../infra/http/youtube/interfaces/playlist/playlist";
 
 export class GetPlaylists implements GetPlaylistsUseCase {
   constructor(private readonly playlistRepository: PlaylistRepository) {}

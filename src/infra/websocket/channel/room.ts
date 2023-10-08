@@ -1,14 +1,14 @@
 import * as socketIo from 'socket.io';
 import * as redis from "redis";
-import { Api } from '../Api';
-import { Websocket } from '../Websocket';
+import { Api } from '../api';
+import { Websocket } from '../websocket';
 import { Redis } from '../../data/data-sources/redis/Redis';
 import { Room as RoomType } from '../../../domain/interfaces/entities/room/room';
 import { CacheDatabase } from '../../data/interfaces/cache-database';
 
 export class Room {
 
-  constructor(private api: Api, private websocket: Websocket, private room: RoomType, private cacheDataBase: CacheDatabase) {}
+  constructor(private websocket: Websocket, private room: RoomType, private cacheDataBase: CacheDatabase) {}
 
   public listen(): void {
 
