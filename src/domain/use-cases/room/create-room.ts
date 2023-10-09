@@ -21,7 +21,5 @@ export class CreateRoom implements CreateRoomUseCase {
     } catch (error) {
       console.log(error);
     }
-    console.log(room.name + " created");
-    return;
   }
 }

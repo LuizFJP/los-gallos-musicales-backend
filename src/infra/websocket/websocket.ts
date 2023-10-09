@@ -1,6 +1,8 @@
 import { Api } from "./api";
 import * as socketIo from 'socket.io';
 import { Room } from "./channel/room";
+import { Room as RoomType } from '../../domain/interfaces/entities/room/room';
+
 import { CacheDatabase } from "../data/interfaces/cache-database";
 
 export class Websocket {
@@ -16,7 +18,7 @@ export class Websocket {
         return this.io
     }
 
-    createRoomChannel(room: string) {
-        new Room(this, {name: room, canvas: ""}, this.cacheDatabase);
+    createRoomChannel(room: RoomType) {
+        new Room(this, room, this.cacheDatabase);
     }
 }
