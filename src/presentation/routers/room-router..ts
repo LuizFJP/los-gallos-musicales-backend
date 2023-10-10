@@ -2,8 +2,10 @@ import { Router } from "express";
 import { CreateRoomUseCase } from "../../domain/interfaces/use-cases/room/create-room-use-case";
 import { EnterRoomUserCase } from "../../domain/interfaces/use-cases/room/enter-room-use-case";
 import { GetAllRoomsUseCase } from "../../domain/interfaces/use-cases/room/get-all-rooms";
+import { Websocket } from "../../infra/websocket/websocket";
 
 export function RoomRouter(
+  websocket: Websocket,
   createRoom: CreateRoomUseCase,
   enterRoom: EnterRoomUserCase,
   getAllRooms: GetAllRoomsUseCase
@@ -12,7 +14,8 @@ export function RoomRouter(
   const router = Router();
 
   router.post('/create', async (req, res) => {
-    await createRoom.execute(req.body.room);
+    const roomName = await createRoom.execute(req.body.room);
+    websocket.createRoomChannel(roomName);
     res.end();
   });
 

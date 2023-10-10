@@ -1,3 +1,4 @@
+import { ListSongsDTO } from "../../../dto/playlist/Song";
 import { Player } from "../player/player";
 
 export interface Room {
@@ -8,7 +9,7 @@ export interface Room {
   round?: number,
   maxPlayers?: number,
   currentPlayers?:number,
-  playlistId?: string,
+  listSongs?: ListSongsDTO[],
   roundDuration?:number,
   roundInterval?:number
 }

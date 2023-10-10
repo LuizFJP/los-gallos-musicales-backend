@@ -1,4 +1,4 @@
-export type ListPlaylistDto = {
+export type SongDTO  = {
   name: string, 
   videoId: string;
 }
