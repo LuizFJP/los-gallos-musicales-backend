@@ -1,4 +1,4 @@
-import { Api } from "./Api";
+import { Api } from "./api";
 import * as socketIo from 'socket.io';
 
 export class Websocket {

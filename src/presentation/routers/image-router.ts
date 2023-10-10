@@ -1,6 +1,6 @@
 import { Request, RequestHandler, Response, Router } from "express";
 import multer from "multer";
-import { multerConfig } from "../../infra/config/MulterConfig";
+import { multerConfig } from "../../infra/config/multer-config";
 import { DownloadAllImagesUseCase } from "../../domain/interfaces/use-cases/image/download-all-images-use-case";
 import { UploadImageUseCase } from "../../domain/interfaces/use-cases/image/upload-image-use-case";
 import { CreateImageDTO } from "../../domain/dto/image/create-image-dto";

@@ -1,8 +1,8 @@
 import * as socketIo from 'socket.io';
 import * as redis from "redis";
-import { Api } from '../Api';
-import { Websocket } from '../Websocket';
-import { Redis } from '../../data/data-sources/redis/Redis';
+import { Api } from '../api';
+import { Websocket } from '../websocket';
+import { Redis } from '../../data/data-sources/redis/redis';
 import { Room as RoomType } from '../../../domain/interfaces/entities/room/room';
 import { CacheDatabase } from '../../data/interfaces/cache-database';
 

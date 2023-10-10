@@ -1,7 +1,7 @@
-import { Api } from "./infra/websocket/Api";
-import { Redis } from "./infra/data/data-sources/redis/Redis"
-import { Websocket } from "./infra/websocket/Websocket";
-import { Mongo } from "./infra/data/data-sources/mongodb/Mongo";
+import { Api } from "./infra/websocket/api";
+import { Redis } from "./infra/data/data-sources/redis/redis"
+import { Websocket } from "./infra/websocket/websocket";
+import { Mongo } from "./infra/data/data-sources/mongodb/mongo";
 
 class App {
   private api: Api;
