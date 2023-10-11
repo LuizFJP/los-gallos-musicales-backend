@@ -14,7 +14,7 @@ export class GetPlaylists implements GetPlaylistsUseCase {
       playlists[0].playlistsUrl[
         this.getRandomArbitrary(0, playlists[0].playlistsUrl.length) - 1
       ];
-
+      console.log(playlistId)
     const youtube = google.youtube({
       version: "v3",
       auth: process.env.YOUTUBE_API_KEY,

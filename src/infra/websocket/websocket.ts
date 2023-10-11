@@ -10,8 +10,8 @@ export class Websocket {
 
     constructor(private api: Api, private cacheDatabase: CacheDatabase) {}
 
-    start() {
-        this.io = new socketIo.Server(this.api.server, { cors: { origin: "*" } });
+    async start() {
+        this.io = await new socketIo.Server(this.api.server, { cors: { origin: "*" } });
     }
 
     getIo(): socketIo.Server {

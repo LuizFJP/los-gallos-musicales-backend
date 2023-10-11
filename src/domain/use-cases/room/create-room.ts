@@ -14,7 +14,7 @@ export class CreateRoom implements CreateRoomUseCase {
   async execute(room: RoomModel): Promise<any> {
     try {
       const roomStringfied = JSON.stringify(room);
-      console.log(roomStringfied)
+   
       const roomBuffered= Buffer.from(roomStringfied).toString('base64');
       this.roomRepository.create(room.name, roomBuffered);
       return room.name

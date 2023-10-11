@@ -8,7 +8,7 @@ export class SavePlayerInRoom implements SavePlayerInRoomUseCase {
   public async execute(player: Player, roomName: string): Promise<void> {
     try {
       const room = await this.roomRepository.get(roomName);
-      const roomString = Buffer.from(room.canvas as string, 'base64').toString("binary");
+      const roomString = Buffer.from(room, 'base64').toString("binary");
       const roomParsed = JSON.parse(roomString);
       roomParsed.players.push(player);
       const roomStringfied = JSON.stringify(roomParsed);

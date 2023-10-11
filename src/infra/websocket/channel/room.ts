@@ -11,19 +11,20 @@ export class Room {
 
     this.websocket.getIo()?.on('connection', (socket) => {
       socket.join(this.room.name);
-      console.log('a user connected to room: ', this.room.name);
 
       socket.on(`${this.room.name} draw`, async (data: any) => {
+        console.log('irru')
         await socket.to(this.room.name).emit(`${this.room.name} draw`, data);
-        console.log("it has drawn", `${this.room.name} draw`)
+  
       });
 
       socket.on(`${this.room.name} save`, async (data: any) => {
         const room = {...this.room, canvas: data};
+        console.log(room);
         const roomStringfied = JSON.stringify(room);
         const roomBuffered= Buffer.from(roomStringfied).toString('base64');
         await this.cacheDataBase.save(this.room.name, roomBuffered);
-        console.log("saved in redis", this.cacheDataBase);
+
       });
 
       socket.on('disconnect', () => {

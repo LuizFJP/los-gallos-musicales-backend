@@ -11,14 +11,12 @@ export class EnterRoom implements EnterRoomUserCase {
   async execute(name: string): Promise<any> {
     try {
       const raw = await this.roomRepository.get(name);
-      console.log(raw);
-      const roomString = Buffer.from(raw.canvas as string, 'base64').toString("binary");
+      const roomString = Buffer.from(raw, 'base64').toString("binary");
+      console.log(roomString);
       const room = JSON.parse(roomString);
-      console.log(room);
       return room;
     } catch (error) {
       return null;
     }
   }
-  
 }
