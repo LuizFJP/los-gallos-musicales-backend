@@ -18,7 +18,7 @@ export class Websocket {
         return this.io
     }
 
-    createRoomChannel(room: RoomType) {
+    createRoomChannel(room: string) {
         new Room(this, room, this.cacheDatabase);
     }
 }
