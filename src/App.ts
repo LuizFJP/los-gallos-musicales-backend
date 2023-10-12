@@ -16,8 +16,6 @@ class App {
     this.mongo.connect()
     this.api = new Api(this.redis);
     this.api.start();
-    this.websocket = new Websocket(this.api, this.redis);
-    this.websocket.start();
   }
 }
 

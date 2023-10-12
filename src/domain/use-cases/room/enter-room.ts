@@ -12,7 +12,6 @@ export class EnterRoom implements EnterRoomUserCase {
     try {
       const raw = await this.roomRepository.get(name);
       const roomString = Buffer.from(raw, 'base64').toString("binary");
-      console.log(roomString);
       const room = JSON.parse(roomString);
       return room;
     } catch (error) {
