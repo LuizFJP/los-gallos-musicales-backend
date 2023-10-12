@@ -10,10 +10,8 @@ export class Room {
   }
 
   public listen(): void {
-
     this.websocket.getIo()?.on('connection', (socket) => {
       socket.join(this.room.name);
-      console.log('a user connected');
       socket.on(`${this.room.name} draw`, async (data: any) => {
         console.log('irru')
         await socket.to(this.room.name).emit(`${this.room.name} draw`, data);

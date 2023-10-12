@@ -12,9 +12,6 @@ export class Websocket {
 
     start() {
         this.io = new socketIo.Server(this.api.server, { cors: { origin: "*" } });
-        this.io.on('connection', (socket) => {
-            console.log('a user connected')
-            socket.join("this.room.name")});
     }
 
     getIo(): socketIo.Server {
