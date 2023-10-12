@@ -10,17 +10,21 @@ export class GetPlaylists implements GetPlaylistsUseCase {
 
   async execute(name: string): Promise<SongDTO[]> {
     const playlists = await this.playlistRepository.findByName(name);
-    const playlistId =
-      playlists[0].playlistsUrl[
-        this.getRandomArbitrary(0, playlists[0].playlistsUrl.length) - 1
-      ];
+    const playlistUrl = playlists[0].playlistsUrl;
+    let playlistId = '';
+    if (playlistUrl.length <= 1 ) {
+      playlistId = playlistUrl[0];
+    } else {
+      playlistId = playlistUrl[Math.floor(Math.random() * playlistUrl.length)];
+    }
+
     const youtube = google.youtube({
       version: "v3",
       auth: process.env.YOUTUBE_API_KEY,
     });
     const response = await youtube.playlistItems.list({
       part: ["snippet"],
-      playlistId: playlistId,
+      playlistId,
       maxResults: 100,
     });
 
