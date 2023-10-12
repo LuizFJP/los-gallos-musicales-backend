@@ -14,8 +14,8 @@ export function RoomRouter(
   const router = Router();
 
   router.post('/create', async (req, res) => {
-    const roomName = await createRoom.execute(req.body.room);
-    websocket.createRoomChannel(roomName);
+    const room = await createRoom.execute(req.body.room);
+    websocket.createRoomChannel(room);
     res.end();
   });
 

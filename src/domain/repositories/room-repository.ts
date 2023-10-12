@@ -11,7 +11,7 @@ export class RoomRepositoryImpl implements RoomRepository {
     this.db = db;
   }
 
-  public async get(roomName: string): Promise<Room> {
+  public async get(roomName: string): Promise<string> {
     return await this.db.recover(roomName);
   }
 

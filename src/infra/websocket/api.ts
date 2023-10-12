@@ -27,31 +27,31 @@ export class Api {
     private webSocket: Websocket;
     public constructor(private cacheDatase: CacheDatabase) { }
 
-    async start() {
+    start() {
         console.log("server started")
         this.app = express();
         this.app.use(cors());
         this.app.use(express.json());
-        await this.startWebsocket();
+        this.server = createServer(this.app);
+        this.startWebsocket();
 
         this.app.use('/genre', GenreRoute(new GetGenres(new GenreRepositoryImpl())));
         this.app.use("/image", ImageRoute(new DownloadAllImages(new ImageRepositoryImpl()), new UploadImage(new ImageRepositoryImpl())));
         this.app.use("/playlist", PlaylistRoute(new GetPlaylists(new PlaylistRepositoryImpl())));
 
         const roomRepository = new RoomRepositoryImpl(this.cacheDatase);
-
         this.app.use("/room", RoomRouter(
         this.webSocket,
         new CreateRoom(roomRepository), 
         new EnterRoom(roomRepository),
         new GetAllRoom(roomRepository)));
 
-        this.server = createServer(this.app);
+
         this.server.listen(this.PORT);
     }
 
-    async startWebsocket() {
+    startWebsocket() {
         this.webSocket = new Websocket(this, this.cacheDatase);
-        await this.webSocket.start();
+        this.webSocket.start();
     }
 }
