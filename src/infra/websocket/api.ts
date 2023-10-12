@@ -19,6 +19,7 @@ import { GetAllRoom } from "../../domain/use-cases/room/get-all-room";
 import { RoomRepositoryImpl } from "../../domain/repositories/room-repository";
 import { CacheDatabase } from "../data/interfaces/cache-database";
 import { Websocket } from "./websocket";
+import { SavePlayerInRoom } from "../../domain/use-cases/room/save-player-in-room";
 
 export class Api {
     public app: Application;
@@ -44,7 +45,8 @@ export class Api {
         this.webSocket,
         new CreateRoom(roomRepository), 
         new EnterRoom(roomRepository),
-        new GetAllRoom(roomRepository)));
+        new GetAllRoom(roomRepository),
+        new SavePlayerInRoom(roomRepository)));
 
 
         this.server.listen(this.PORT);
