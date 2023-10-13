@@ -19,6 +19,7 @@ export class Websocket {
     }
 
     createRoomChannel(room: string) {
-        new Room(this, room, this.cacheDatabase);
+        const roomChannel = new Room(this, room, this.cacheDatabase);
+        roomChannel.listen();
     }
 }

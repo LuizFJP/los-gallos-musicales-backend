@@ -15,8 +15,7 @@ export class CreateRoom implements CreateRoomUseCase {
     try {
       const roomStringfied = JSON.stringify(room);
    
-      const roomBuffered= Buffer.from(roomStringfied).toString('base64');
-      this.roomRepository.create(room.name, roomBuffered);
+      this.roomRepository.create(room.name, roomStringfied);
       return room.name
     } catch (error) {
       console.log(error);
