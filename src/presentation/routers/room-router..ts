@@ -23,7 +23,7 @@ export function RoomRouter(
   });
 
   router.post('/join', async (req, res) => {
-    console.log(req)
+    // console.log(req)
     if (!req.query.name) {
 			res.end();
 		} else {

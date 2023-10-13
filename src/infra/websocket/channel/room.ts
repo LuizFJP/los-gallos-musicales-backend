@@ -10,12 +10,13 @@ export class Room {
 
   public listen(): void {
     this.websocket.getIo()?.on('connect', (socket) => {
+      console.log("entrou aqui??")
          const {room: roomName} = socket.handshake.query;
       console.log('a user connected');
       socket.join(roomName as string);
 
       socket.on(`update-players`, async (roomName: string, player: Player) =>{
-        console.log('joined to room', roomName)
+        // console.log('joined to room', roomName)
         
         const room = await this.cacheDataBase.recover(roomName);
         const roomParsed = JSON.parse(room);
