@@ -26,8 +26,9 @@ export function RoomRouter(
     if (!req.query.name) {
 			res.end();
 		} else {
+      websocket.createChatChannel(req.query.name as string);
 			const room = await enterRoom.execute(req.query.name as string);
-      await savePlayerInRoom.execute(req.query.name as string, req.body);
+      // await savePlayerInRoom.execute(req.query.name as string, req.body);
 			res.json(room);
 		}
   });

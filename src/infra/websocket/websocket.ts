@@ -21,6 +21,11 @@ export class Websocket {
 
     createRoomChannel(roomName: string) {
         new Room(this, roomName, this.cacheDatabase);
-        new TalkChat(this,roomName);
+    }
+
+    createChatChannel(roomName: string) {
+        console.log('joined chat');
+        const talkChat = new TalkChat(this, roomName);
+        talkChat.listen();
     }
 }

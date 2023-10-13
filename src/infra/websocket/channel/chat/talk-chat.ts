@@ -5,21 +5,23 @@ export class TalkChat {
     private websocket: Websocket,
     private roomName: string,
   ) {
-    this.listen();
   }
 
   public listen(): void {
-    this.websocket.getIo()?.on("connection", (socket) => {
+    const messageList:string[] = [];
+    this.websocket.getIo()?.on("connect", (socket) => {
       socket.join(this.roomName);
-      console.log("a user connected");
+      console.log("a user connected to chat");
+
       socket.on('talk-chat-message', (message: any) => {
+        messageList.push(message);
+        socket.to(this.roomName).emit(`talk-chat-message`, messageList);
         console.log(message);
-        socket.join(this.roomName);
-        socket.to(this.roomName).emit(`talk-chat-message`, message);
       });
       
       socket.on("disconnect", () => {
         console.log("user disconnected");
+        socket.leave(this.roomName);
       });
     });
   }

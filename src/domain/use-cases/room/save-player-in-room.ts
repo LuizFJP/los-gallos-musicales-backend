@@ -13,7 +13,7 @@ export class SavePlayerInRoom implements SavePlayerInRoomUseCase {
       roomParsed.players.push(player);
       roomParsed.currentPlayers = roomParsed.players.length;
       const roomStringfied = JSON.stringify(roomParsed);
-      const roomBuffered= Buffer.from(roomStringfied).toString('base64');
+      const roomBuffered= Buffer.from(roomStringfied).toString('utf8');
       await this.roomRepository.create(roomName, roomBuffered);
     } catch (error) {
       throw new Error("Falha ao salvar o player")

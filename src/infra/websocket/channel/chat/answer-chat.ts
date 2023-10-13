@@ -8,7 +8,6 @@ export class AnswerChat {
     private roomName: string,
     private cacheDataBase: CacheDatabase
   ) {
-    this.listen();
   }
 
   public listen(): void {
