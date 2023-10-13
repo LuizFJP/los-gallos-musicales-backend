@@ -4,6 +4,7 @@ import { Room } from "./channel/room";
 import { Room as RoomType } from '../../domain/interfaces/entities/room/room';
 
 import { CacheDatabase } from "../data/interfaces/cache-database";
+import { TalkChat } from "./channel/chat/talk-chat";
 
 export class Websocket {
     private io: socketIo.Server;
@@ -18,7 +19,8 @@ export class Websocket {
         return this.io
     }
 
-    createRoomChannel(room: string) {
-        new Room(this, room, this.cacheDatabase);
+    createRoomChannel(roomName: string) {
+        new Room(this, roomName, this.cacheDatabase);
+        new TalkChat(this,roomName);
     }
 }
