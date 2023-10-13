@@ -19,13 +19,14 @@ export class Websocket {
         return this.io
     }
 
-    createRoomChannel(roomName: string) {
-        new Room(this, roomName, this.cacheDatabase);
-    }
-
     createChatChannel(roomName: string) {
         console.log('joined chat');
         const talkChat = new TalkChat(this, roomName);
         talkChat.listen();
+    }
+    
+    createRoomChannel(room: string) {
+        const roomChannel = new Room(this, room, this.cacheDatabase);
+        roomChannel.listen();
     }
 }
