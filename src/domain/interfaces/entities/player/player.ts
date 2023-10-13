@@ -1,7 +1,8 @@
 export interface Player {
-  userName?: string;
+  username?: string;
   penalties?: number;
   score?: number;
   wins?: number;
   avatar?: string; 
+  artirst?: boolean;
 }
