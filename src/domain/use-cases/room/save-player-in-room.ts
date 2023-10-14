@@ -7,7 +7,6 @@ export class SavePlayerInRoom implements SavePlayerInRoomUseCase {
   
   public async execute(roomName: string, player: Player): Promise<void> {
     try {
-      console.log(roomName);
       let room = await this.roomRepository.get(roomName);
       const roomParsed = JSON.parse(room);
       roomParsed.players!.push(player);

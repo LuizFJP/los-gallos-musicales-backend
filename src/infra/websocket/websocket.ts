@@ -1,25 +1,26 @@
 import { Api } from "./api";
-import * as socketIo from 'socket.io';
 import { Room } from "./channel/room";
 import { Room as RoomType } from '../../domain/interfaces/entities/room/room';
 
 import { CacheDatabase } from "../data/interfaces/cache-database";
+import { Server } from "socket.io";
 
 export class Websocket {
-    private io: socketIo.Server;
+    private io: Server;
 
-    constructor(private api: Api, private cacheDatabase: CacheDatabase) {}
+    constructor(private cacheDatabase: CacheDatabase) {}
 
     start() {
-        this.io = new socketIo.Server(this.api.server, { cors: { origin: "*" } });
+        this.io = new Server(3000, { cors: { origin: "*" } });
+        this.createRoomChannel();
     }
 
-    getIo(): socketIo.Server {
+    getIo(): Server {
         return this.io
     }
 
-    createRoomChannel(room: string) {
-        const roomChannel = new Room(this, room, this.cacheDatabase);
+    createRoomChannel() {
+        const roomChannel = new Room(this, this.cacheDatabase);
         roomChannel.listen();
     }
 }

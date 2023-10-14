@@ -6,12 +6,14 @@ import { Player } from '../../../domain/interfaces/entities/player/player';
 
 export class Room {
 
-  constructor(private websocket: Websocket, private roomName: string, private cacheDataBase: CacheDatabase) {}
+  constructor(private websocket: Websocket, private cacheDataBase: CacheDatabase) {}
 
   public listen(): void {
+    console.log('channel de room criado')
     this.websocket.getIo()?.on('connect', (socket) => {
-         const {room: roomName} = socket.handshake.query;
-      console.log('a user connected');
+         const {name: roomName} = socket.handshake.query;
+
+      console.log('a user connected', roomName, socket.id);
       socket.join(roomName as string);
 
       socket.on(`update-players`, async (roomName: string, player: Player) =>{
@@ -41,10 +43,15 @@ export class Room {
         socket.to(roomName).emit(`update-players`, { ...roomParsed, players });
         socket.leave(roomName);
       });
+      
+      socket.on("disconnecting", (reason) => {
+        socket.leave('qwe')
+        console.log(socket.rooms); // Set { ... }
+      });
 
       socket.on('disconnect', () => {
-        console.log('user disconnected');
+        console.log('user disconnected')
       });
     });
   }
-} 
+}

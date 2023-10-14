@@ -34,6 +34,7 @@ export class Api {
         this.app.use(cors());
         this.app.use(express.json());
         this.server = createServer(this.app);
+        
         this.startWebsocket();
 
         this.app.use('/genre', GenreRoute(new GetGenres(new GenreRepositoryImpl())));
@@ -53,7 +54,7 @@ export class Api {
     }
 
     startWebsocket() {
-        this.webSocket = new Websocket(this, this.cacheDatase);
+        this.webSocket = new Websocket(this.cacheDatase);
         this.webSocket.start();
     }
 }
