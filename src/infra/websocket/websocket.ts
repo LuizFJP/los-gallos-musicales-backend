@@ -4,11 +4,12 @@ import { Room as RoomType } from '../../domain/interfaces/entities/room/room';
 
 import { CacheDatabase } from "../data/interfaces/cache-database";
 import { Server } from "socket.io";
+import { TalkChat } from "./channel/chat/talk-chat";
 
 export class Websocket {
     private io: Server;
 
-    constructor(private cacheDatabase: CacheDatabase) {}
+    constructor(private cacheDatabase: CacheDatabase) { }
 
     start() {
         this.io = new Server(3000, { cors: { origin: "*" } });
@@ -20,7 +21,13 @@ export class Websocket {
     }
 
     createRoomChannel() {
-        const roomChannel = new Room(this, this.cacheDatabase);
-        roomChannel.listen();
+        new Room(this, this.cacheDatabase);
+
+    }
+
+    createChatChannel(roomName: string) {
+        console.log('joined chat');
+        const talkChat = new TalkChat(this, roomName);
+        talkChat.listen();
     }
 }

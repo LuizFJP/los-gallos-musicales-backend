@@ -18,12 +18,12 @@ export function RoomRouter(
 
   router.post('/create', async (req, res) => {
     const room = await createRoom.execute(req.body.room);
-    websocket.createRoomChannel(room);
     res.end();
   });
 
   router.post('/join', async (req, res) => {
     console.log('entrou no join');
+    // console.log(req)
     if (!req.query.name) {
 			res.end();
 		} else {

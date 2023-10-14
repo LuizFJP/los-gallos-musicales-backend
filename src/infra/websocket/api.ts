@@ -1,5 +1,5 @@
 import { Application } from "express";
-import { createServer, Server } from 'http';
+import { createServer, Server } from "http";
 import express from "express";
 import cors from "cors";
 import { GenreRoute } from "../../presentation/routers/genre-router";
@@ -20,6 +20,10 @@ import { RoomRepositoryImpl } from "../../domain/repositories/room-repository";
 import { CacheDatabase } from "../data/interfaces/cache-database";
 import { Websocket } from "./websocket";
 import { SavePlayerInRoom } from "../../domain/use-cases/room/save-player-in-room";
+import { SecurityRoute } from "../../presentation/routers/security-router";
+import { EncryptUsername } from "../../domain/use-cases/security/encrypt-username-use-case";
+import { DecryptUsername } from "../../domain/use-cases/security/decrypt-username-use-case";
+import { SecurityCipher } from "../../domain/model/security/security";
 
 export class Api {
     public app: Application;
@@ -29,26 +33,49 @@ export class Api {
     public constructor(private cacheDatase: CacheDatabase) { }
 
     start() {
-        console.log("server started")
+        console.log("server started");
         this.app = express();
         this.app.use(cors());
         this.app.use(express.json());
         this.server = createServer(this.app);
-        
+
         this.startWebsocket();
 
-        this.app.use('/genre', GenreRoute(new GetGenres(new GenreRepositoryImpl())));
-        this.app.use("/image", ImageRoute(new DownloadAllImages(new ImageRepositoryImpl()), new UploadImage(new ImageRepositoryImpl())));
-        this.app.use("/playlist", PlaylistRoute(new GetPlaylists(new PlaylistRepositoryImpl())));
+        this.app.use(
+            "/genre",
+            GenreRoute(new GetGenres(new GenreRepositoryImpl()))
+        );
+        this.app.use(
+            "/image",
+            ImageRoute(
+                new DownloadAllImages(new ImageRepositoryImpl()),
+                new UploadImage(new ImageRepositoryImpl())
+            )
+        );
+        this.app.use(
+            "/playlist",
+            PlaylistRoute(new GetPlaylists(new PlaylistRepositoryImpl()))
+        );
 
         const roomRepository = new RoomRepositoryImpl(this.cacheDatase);
-        this.app.use("/room", RoomRouter(
-        this.webSocket,
-        new CreateRoom(roomRepository), 
-        new EnterRoom(roomRepository),
-        new GetAllRoom(roomRepository),
-        new SavePlayerInRoom(roomRepository)));
-
+        this.app.use(
+            "/room",
+            RoomRouter(
+                this.webSocket,
+                new CreateRoom(roomRepository),
+                new EnterRoom(roomRepository),
+                new GetAllRoom(roomRepository),
+                new SavePlayerInRoom(roomRepository)
+            )
+        );
+        const securityCipher = new SecurityCipher();
+        this.app.use(
+            "/security",
+            SecurityRoute(
+                new EncryptUsername(securityCipher),
+                new DecryptUsername(securityCipher)
+            )
+        );
 
         this.server.listen(this.PORT);
     }
@@ -57,4 +84,5 @@ export class Api {
         this.webSocket = new Websocket(this.cacheDatase);
         this.webSocket.start();
     }
+
 }
