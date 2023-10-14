@@ -3,24 +3,23 @@ import { Websocket } from "../../websocket";
 export class TalkChat {
   constructor(
     private websocket: Websocket,
-    private roomName: string,
   ) {
   }
 
   public listen(): void {
     this.websocket.getIo()?.on("connect", (socket) => {
-      console.log("quantas vezes entrou aqui");
-      socket.join(this.roomName);
+      const { name: roomName } = socket.handshake.query;
+      socket.join(roomName as string);
+
       console.log("a user connected to chat");
 
-      socket.on('talk-chat-message', (message: any) => {
-        socket.to(this.roomName).emit(`talk-chat-message`, message);
+      socket.on('talk-chat-message', (roomName: string, message: any) => {
+        socket.to(roomName).emit(`talk-chat-message`, message);
         console.log(message);
       });
       
       socket.on("disconnect", () => {
-        console.log("user disconnected");
-        socket.leave(this.roomName);
+        console.log('user disconnected from chat')
       });
     });
   }

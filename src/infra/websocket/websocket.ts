@@ -14,6 +14,7 @@ export class Websocket {
     start() {
         this.io = new Server(3000, { cors: { origin: "*" } });
         this.createRoomChannel();
+        this.createChatChannel();
     }
 
     getIo(): Server {
@@ -22,12 +23,11 @@ export class Websocket {
 
     createRoomChannel() {
         new Room(this, this.cacheDatabase);
-
     }
 
-    createChatChannel(roomName: string) {
+    createChatChannel() { 
         console.log('joined chat');
-        const talkChat = new TalkChat(this, roomName);
+        const talkChat = new TalkChat(this);
         talkChat.listen();
     }
 }
