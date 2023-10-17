@@ -26,6 +26,7 @@ export class Room {
       });
 
       socket.on(`draw`, (roomName: string, data: any) => {
+        console.log('draw', roomName)
         socket.to(roomName).emit(`draw`, data);
       });
 
