@@ -19,9 +19,7 @@ export class RoomRepositoryImpl implements RoomRepository {
     await this.db.save(roomName, roomBuffered);
     return Promise.resolve();
   }
-  public async getRoom(roomName: string): Promise<any> {
-
-  }
+  
   public savePlayerIntoRoom(player: Player, room: string): Promise<any> {
     throw new Error("Method not implemented.");
   }

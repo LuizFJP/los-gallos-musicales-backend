@@ -15,7 +15,6 @@ export class TalkChat {
 
       socket.on('talk-chat-message', (roomName: string, message: any) => {
         socket.to(roomName).emit(`talk-chat-message`, message);
-        console.log(message);
       });
       
       socket.on("disconnect", () => {

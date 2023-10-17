@@ -11,8 +11,6 @@ export function SecurityRoute(
 
     router.post('/encrypt', async (req, res) => {
         const encryptedUsername = await encryptUsername.execute(req.body.username);
-        console.log(encryptedUsername);
-        console.log(req.body.username);
         res.json(encryptedUsername);
     });
 

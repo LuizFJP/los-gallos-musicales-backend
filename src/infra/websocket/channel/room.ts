@@ -18,8 +18,6 @@ export class Room {
       socket.join(roomName as string);
 
       socket.on(`update-players`, async (roomName: string, player: Player) => {
-        // console.log('joined to room', roomName)
-
         const room = await this.cacheDataBase.recover(roomName);
         const roomParsed = JSON.parse(room);
         socket.to(roomName).emit(`update-players`, roomParsed);
@@ -38,7 +36,6 @@ export class Room {
       });
 
       socket.on('leave-room', async (roomName: string, username: string) => {
-        console.log('aaaa saiu')
         const room = await this.cacheDataBase.recover(roomName);
         const roomParsed = JSON.parse(room);
         const players = roomParsed.players.filter((player: Player) => player.username !== username);

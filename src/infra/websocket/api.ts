@@ -24,6 +24,7 @@ import { SecurityRoute } from "../../presentation/routers/security-router";
 import { EncryptUsername } from "../../domain/use-cases/security/encrypt-username-use-case";
 import { DecryptUsername } from "../../domain/use-cases/security/decrypt-username-use-case";
 import { SecurityCipher } from "../../domain/model/security/security";
+import { GetRoom } from "../../domain/use-cases/room/get-room";
 
 export class Api {
     public app: Application;
@@ -61,11 +62,11 @@ export class Api {
         this.app.use(
             "/room",
             RoomRouter(
-                this.webSocket,
                 new CreateRoom(roomRepository),
                 new EnterRoom(roomRepository),
                 new GetAllRoom(roomRepository),
-                new SavePlayerInRoom(roomRepository)
+                new SavePlayerInRoom(roomRepository),
+                new GetRoom(roomRepository)
             )
         );
         const securityCipher = new SecurityCipher();

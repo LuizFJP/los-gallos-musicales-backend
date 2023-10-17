@@ -9,7 +9,6 @@ export class DecryptUsername implements DecryptUsernameUseCase {
   }
 
   execute(username: string): string {
-    console.log(username);
     return this.securityCipher.decrypt(username);
   }
 }

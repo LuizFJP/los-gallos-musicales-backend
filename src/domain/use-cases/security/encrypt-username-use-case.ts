@@ -9,7 +9,6 @@ export class EncryptUsername implements EncryptUsernameUseCase {
   }
 
   execute(username: string): string {
-    console.log(username);
     return this.securityCipher.encrypt(username);
   }
 }
