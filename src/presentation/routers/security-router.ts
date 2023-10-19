@@ -10,13 +10,23 @@ export function SecurityRoute(
     const router = Router();
 
     router.post('/encrypt', async (req, res) => {
-        const encryptedUsername = await encryptUsername.execute(req.body.username);
-        res.json(encryptedUsername);
+        try {
+            const encryptedUsername = await encryptUsername.execute(req.body.username);
+            res.json(encryptedUsername);
+        } catch (error) {
+            console.log(error);
+            res.json(undefined);
+        }
     });
 
     router.post('/decrypt', async (req, res) => {
-        const decryptedUsername = await decryptUsername.execute(req.body.username);
-        res.json(decryptedUsername);
+        try {
+            const decryptedUsername = await decryptUsername.execute(req.body.username);
+            res.json(decryptedUsername);
+        } catch (error) {
+            console.log(error);
+            res.json(undefined);
+        }
     });
 
     return router;
