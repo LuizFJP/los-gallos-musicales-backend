@@ -65,7 +65,6 @@ export class Api {
                 new CreateRoom(roomRepository),
                 new EnterRoom(roomRepository),
                 new GetAllRoom(roomRepository),
-                new SavePlayerInRoom(roomRepository),
                 new GetRoom(roomRepository)
             )
         );

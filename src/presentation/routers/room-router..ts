@@ -11,7 +11,6 @@ export function RoomRouter(
   createRoom: CreateRoomUseCase,
   enterRoom: EnterRoomUserCase,
   getAllRooms: GetAllRoomsUseCase,
-  savePlayerInRoom: SavePlayerInRoomUseCase,
   getRoom: GetRoomUseCase
 ) {
 
@@ -27,8 +26,7 @@ export function RoomRouter(
     if (!req.query.name) {
 			res.end();
 		} else {
-			const room = await enterRoom.execute(req.query.name as string);
-      await savePlayerInRoom.execute(req.query.name as string, req.body);
+			const room = await enterRoom.execute(req.query.name as string, req.body);
 			res.json(room);
 		}
   });

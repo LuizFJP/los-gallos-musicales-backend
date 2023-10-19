@@ -17,14 +17,13 @@ export class Room {
 
       socket.join(roomName as string);
 
-      socket.on(`update-players`, async (roomName: string, player: Player) => {
+      socket.on(`update-players`, async (roomName: string) => {
         const room = await this.cacheDataBase.recover(roomName);
         const roomParsed = JSON.parse(room);
         socket.to(roomName).emit(`update-players`, roomParsed);
       });
 
       socket.on(`draw`, (roomName: string, data: any) => {
-        console.log('draw', roomName)
         socket.to(roomName).emit(`draw`, data);
       });
 
@@ -34,13 +33,16 @@ export class Room {
         const roomStringify = JSON.stringify(newRoom);
         await this.cacheDataBase.save(roomName, roomStringify);
       });
-
+ 
       socket.on('leave-room', async (roomName: string, username: string) => {
         console.log('saiu da sala', roomName, username)
         const room = await this.cacheDataBase.recover(roomName);
         const roomParsed = JSON.parse(room);
         const players = roomParsed.players.filter((player: Player) => player.username !== username);
-        socket.to(roomName).emit(`update-players`, { ...roomParsed, players });
+        roomParsed.players = players;
+        const roomStringify = JSON.stringify(roomParsed);
+        await this.cacheDataBase.save(roomName, roomStringify);
+        socket.to(roomName).emit(`update-players`, roomParsed);
         socket.leave(roomName);
       });
 
