@@ -36,6 +36,7 @@ export class Room {
       });
 
       socket.on('leave-room', async (roomName: string, username: string) => {
+        console.log('saiu da sala', roomName, username)
         const room = await this.cacheDataBase.recover(roomName);
         const roomParsed = JSON.parse(room);
         const players = roomParsed.players.filter((player: Player) => player.username !== username);
