@@ -1,3 +1,4 @@
+import { Player } from "../../interfaces/entities/player/player";
 import { RoomRepository } from "../../interfaces/repositories/room-repository";
 import { EnterRoomUserCase } from "../../interfaces/use-cases/room/enter-room-use-case";
 
@@ -8,11 +9,14 @@ export class EnterRoom implements EnterRoomUserCase {
       this.roomRepository = roomRepository
     }
 
-  async execute(name: string): Promise<any> {
+  async execute(name: string, player: Player): Promise<any> {
     try {
       const room = await this.roomRepository.get(name);
-      const roomStringify = JSON.parse(room);
-      return roomStringify;
+      const roomParsed = JSON.parse(room);
+      roomParsed.players.push(player);
+      const roomStringify = JSON.stringify(roomParsed);
+      await this.roomRepository.create(roomParsed.name, roomStringify);
+      return roomParsed;
     } catch (error) {
       return null;
     }
