@@ -2,9 +2,6 @@ import { Router } from "express";
 import { CreateRoomUseCase } from "../../domain/interfaces/use-cases/room/create-room-use-case";
 import { EnterRoomUserCase } from "../../domain/interfaces/use-cases/room/enter-room-use-case";
 import { GetAllRoomsUseCase } from "../../domain/interfaces/use-cases/room/get-all-rooms";
-import { Websocket } from "../../infra/websocket/websocket";
-import { SavePlayerInRoom } from "../../domain/use-cases/room/save-player-in-room";
-import { SavePlayerInRoomUseCase } from "../../domain/interfaces/use-cases/room/save-player-in-room-use-case";
 import { GetRoomUseCase } from "../../domain/interfaces/use-cases/room/get-room-use-case";
 
 export function RoomRouter(
@@ -17,7 +14,10 @@ export function RoomRouter(
   const router = Router();
 
   router.post('/create', async (req, res) => {
-    await createRoom.execute(req.body.room);
+    const room = await createRoom.execute(req.body.room);
+    if (!room) {
+      res.status(409).json({ error: 'Room already exists' });
+    }
     res.end();
   });
 
