@@ -13,10 +13,7 @@ export class EnterRoom implements EnterRoomUserCase {
     try {
       const room = await this.roomRepository.get(name);
       const roomParsed = JSON.parse(room);
-      if (roomParsed.players.includes(player)) {
-        pla
-      }
-      roomParsed.players.push(player);
+      roomParsed.players.push(player);   
       const roomStringify = JSON.stringify(roomParsed);
       await this.roomRepository.create(roomParsed.name, roomStringify);
       return roomParsed;
