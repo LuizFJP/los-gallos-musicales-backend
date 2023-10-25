@@ -15,8 +15,6 @@ export class CreateRoom implements CreateRoomUseCase {
     try {
       const roomStringfied = JSON.stringify(room);
       const roomList = await this.roomRepository.getAllRooms();
-      console.log(room.name)
-      console.log(roomList);
       if (roomList.includes(room.name)) {
         return false;
       }

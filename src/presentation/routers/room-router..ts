@@ -17,6 +17,8 @@ export function RoomRouter(
     const room = await createRoom.execute(req.body.room);
     if (!room) {
       res.status(409).json({ error: 'Room already exists' });
+    } else {
+      res.status(201).json({success: `${room} created`});
     }
     res.end();
   });
