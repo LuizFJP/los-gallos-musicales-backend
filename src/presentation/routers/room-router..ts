@@ -2,10 +2,8 @@ import { Router } from "express";
 import { CreateRoomUseCase } from "../../domain/interfaces/use-cases/room/create-room-use-case";
 import { EnterRoomUserCase } from "../../domain/interfaces/use-cases/room/enter-room-use-case";
 import { GetAllRoomsUseCase } from "../../domain/interfaces/use-cases/room/get-all-rooms";
-import { Websocket } from "../../infra/websocket/websocket";
-import { SavePlayerInRoom } from "../../domain/use-cases/room/save-player-in-room";
-import { SavePlayerInRoomUseCase } from "../../domain/interfaces/use-cases/room/save-player-in-room-use-case";
 import { GetRoomUseCase } from "../../domain/interfaces/use-cases/room/get-room-use-case";
+
 
 export function RoomRouter(
   createRoom: CreateRoomUseCase,
@@ -24,11 +22,11 @@ export function RoomRouter(
   router.post('/join', async (req, res) => {
     console.log('entrou no join');
     if (!req.query.name) {
-			res.end();
-		} else {
-			const room = await enterRoom.execute(req.query.name as string, req.body);
-			res.json(room);
-		}
+      res.end();
+    } else {
+      const room = await enterRoom.execute(req.query.name as string, req.body);
+      res.json(room);
+    }
   });
 
   router.get('/', async (req, res) => {

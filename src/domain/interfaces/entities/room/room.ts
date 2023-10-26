@@ -11,5 +11,6 @@ export interface Room {
   currentPlayers?:number,
   listSongs?: ListSongsDTO[],
   roundDuration?:number,
-  roundInterval?:number
+  roundInterval?:number,
+  breakMatch?:boolean,
 }

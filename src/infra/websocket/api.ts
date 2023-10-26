@@ -30,7 +30,7 @@ export class Api {
     public app: Application;
     public server: Server;
     public PORT = 8100;
-    private webSocket: Websocket;
+    private websocket: Websocket;
     public constructor(private cacheDatase: CacheDatabase) { }
 
     start() {
@@ -81,8 +81,8 @@ export class Api {
     }
 
     startWebsocket() {
-        this.webSocket = new Websocket(this.cacheDatase);
-        this.webSocket.start();
+        this.websocket = new Websocket(this, this.cacheDatase);
+        this.websocket.start();
     }
 
 }
