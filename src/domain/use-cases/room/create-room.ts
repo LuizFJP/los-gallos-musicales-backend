@@ -14,7 +14,10 @@ export class CreateRoom implements CreateRoomUseCase {
   async execute(room: RoomModel): Promise<any> {
     try {
       const roomStringfied = JSON.stringify(room);
-   
+      const roomList = await this.roomRepository.getAllRooms();
+      if (roomList.includes(room.name)) {
+        return false;
+      }
       this.roomRepository.create(room.name, roomStringfied);
       return room.name
     } catch (error) {

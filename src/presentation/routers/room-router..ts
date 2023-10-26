@@ -15,7 +15,12 @@ export function RoomRouter(
   const router = Router();
 
   router.post('/create', async (req, res) => {
-    await createRoom.execute(req.body.room);
+    const room = await createRoom.execute(req.body.room);
+    if (!room) {
+      res.status(409).json({ error: 'Room already exists' });
+    } else {
+      res.status(201).json({success: `${room} created`});
+    }
     res.end();
   });
 
