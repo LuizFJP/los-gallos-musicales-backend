@@ -1,5 +1,5 @@
 import { Api } from "./api";
-import { Room } from "./channel/room";
+import { Room } from "./channel/room/room";
 import { Room as RoomType } from '../../domain/interfaces/entities/room/room';
 
 import { CacheDatabase } from "../data/interfaces/cache-database";
@@ -10,10 +10,10 @@ import { AnswerChat } from "./channel/chat/answer-chat";
 export class Websocket {
     private io: Server;
 
-    constructor(private cacheDatabase: CacheDatabase) { }
+    constructor(private api: Api, private cacheDatabase: CacheDatabase) { }
 
     start() {
-        this.io = new Server(3000, { cors: { origin: "*" } });
+        this.io = new Server(this.api.server, { cors: { origin: "*" } });
         this.createRoomChannel();
         this.createChatChannel();
         this.createAnwerChannel();
@@ -26,7 +26,7 @@ export class Websocket {
     createRoomChannel() {
         const room = new Room(this, this.cacheDatabase);
         room.listen();
-    }
+     }
 
     createChatChannel() { 
         const talkChat = new TalkChat(this);

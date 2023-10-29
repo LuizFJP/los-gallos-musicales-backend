@@ -4,6 +4,7 @@ import { EnterRoomUserCase } from "../../domain/interfaces/use-cases/room/enter-
 import { GetAllRoomsUseCase } from "../../domain/interfaces/use-cases/room/get-all-rooms";
 import { GetRoomUseCase } from "../../domain/interfaces/use-cases/room/get-room-use-case";
 
+
 export function RoomRouter(
   createRoom: CreateRoomUseCase,
   enterRoom: EnterRoomUserCase,
@@ -25,11 +26,11 @@ export function RoomRouter(
 
   router.post('/join', async (req, res) => {
     if (!req.query.name) {
-			res.end();
-		} else {
-			const room = await enterRoom.execute(req.query.name as string, req.body);
-			res.json(room);
-		}
+      res.end();
+    } else {
+      const room = await enterRoom.execute(req.query.name as string, req.body);
+      res.json(room);
+    }
   });
 
   router.get('/', async (req, res) => {

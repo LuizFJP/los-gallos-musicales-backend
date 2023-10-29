@@ -1,10 +1,13 @@
-import { Api } from '../api';
-import { Websocket } from '../websocket';
-import { Room as RoomType } from '../../../domain/interfaces/entities/room/room';
-import { CacheDatabase } from '../../data/interfaces/cache-database';
-import { Player } from '../../../domain/interfaces/entities/player/player';
+import { Api } from '../../api';
+import { Websocket } from '../../websocket';
+import { Room as RoomType } from '../../../../domain/interfaces/entities/room/room';
+import { CacheDatabase } from '../../../data/interfaces/cache-database';
+import { Player } from '../../../../domain/interfaces/entities/player/player';
+import { Cronometer } from './cronometer';
 
 export class Room {
+
+  private static roomName: string;
 
   constructor(private websocket: Websocket, private cacheDataBase: CacheDatabase) { }
 
@@ -33,7 +36,7 @@ export class Room {
         const roomStringify = JSON.stringify(newRoom);
         await this.cacheDataBase.save(roomName, roomStringify);
       });
- 
+
       socket.on('leave-room', async (roomName: string, username: string) => {
         console.log('saiu da sala', roomName, username)
         const room = await this.cacheDataBase.recover(roomName);
@@ -44,6 +47,23 @@ export class Room {
         await this.cacheDataBase.save(roomName, roomStringify);
         socket.to(roomName).emit(`update-players`, roomParsed);
         socket.leave(roomName);
+      });
+
+      socket.on('cronometer', async (roomName: string, room: RoomType) => {
+        const cronometer = new Cronometer(this.websocket.getIo(), room);
+        cronometer.start();
+      });
+
+      socket.on('break-timer', async (roomName: string) => {
+        const room = await this.cacheDataBase.recover(roomName);
+        const roomParsed = JSON.parse(room);
+        roomParsed.breakMatch = true;
+        await this.cacheDataBase.save(roomName, JSON.stringify(roomParsed));
+        setTimeout(async () => {
+          roomParsed.breakMatch = false;
+          await this.cacheDataBase.save(roomName, JSON.stringify(roomParsed));
+          socket.to(roomName).emit(`start-game`);
+        }, roomParsed.roundInterval * 1000);
       });
 
       socket.on('disconnect', () => {
