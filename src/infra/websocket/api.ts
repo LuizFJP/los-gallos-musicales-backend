@@ -26,6 +26,7 @@ import { DecryptUsername } from "../../domain/use-cases/security/decrypt-usernam
 import { SecurityCipher } from "../../domain/model/security/security";
 import { GetRoom } from "../../domain/use-cases/room/get-room";
 import { RoomRepository } from "../../domain/interfaces/repositories/room-repository";
+import { VerifyPlayerName } from "../../domain/use-cases/player/verify-player-name-use-case";
 
 export class Api {
     public app: Application;
@@ -75,7 +76,8 @@ export class Api {
             "/security",
             SecurityRoute(
                 new EncryptUsername(securityCipher),
-                new DecryptUsername(securityCipher)
+                new DecryptUsername(securityCipher),
+                new VerifyPlayerName(this.roomRepository)
             )
         );
 
