@@ -25,12 +25,15 @@ import { EncryptUsername } from "../../domain/use-cases/security/encrypt-usernam
 import { DecryptUsername } from "../../domain/use-cases/security/decrypt-username-use-case";
 import { SecurityCipher } from "../../domain/model/security/security";
 import { GetRoom } from "../../domain/use-cases/room/get-room";
+import { RoomRepository } from "../../domain/interfaces/repositories/room-repository";
 
 export class Api {
     public app: Application;
     public server: Server;
     public PORT = 8100;
     private websocket: Websocket;
+    private roomRepository: RoomRepository = new RoomRepositoryImpl(this.cacheDatase);
+
     public constructor(private cacheDatase: CacheDatabase) { }
 
     start() {
@@ -58,14 +61,13 @@ export class Api {
             PlaylistRoute(new GetPlaylists(new PlaylistRepositoryImpl()))
         );
 
-        const roomRepository = new RoomRepositoryImpl(this.cacheDatase);
         this.app.use(
             "/room",
             RoomRouter(
-                new CreateRoom(roomRepository),
-                new EnterRoom(roomRepository),
-                new GetAllRoom(roomRepository),
-                new GetRoom(roomRepository)
+                new CreateRoom(this.roomRepository),
+                new EnterRoom(this.roomRepository),
+                new GetAllRoom(this.roomRepository),
+                new GetRoom(this.roomRepository)
             )
         );
         const securityCipher = new SecurityCipher();
@@ -81,7 +83,7 @@ export class Api {
     }
 
     startWebsocket() {
-        this.websocket = new Websocket(this, this.cacheDatase);
+        this.websocket = new Websocket(this, this.cacheDatase, this.roomRepository);
         this.websocket.start();
     }
 

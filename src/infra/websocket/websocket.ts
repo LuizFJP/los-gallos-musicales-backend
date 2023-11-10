@@ -6,11 +6,12 @@ import { CacheDatabase } from "../data/interfaces/cache-database";
 import { Server } from "socket.io";
 import { TalkChat } from "./channel/chat/talk-chat";
 import { AnswerChat } from "./channel/chat/answer-chat";
+import { RoomRepository } from "../../domain/interfaces/repositories/room-repository";
 
 export class Websocket {
     private io: Server;
 
-    constructor(private api: Api, private cacheDatabase: CacheDatabase) { }
+    constructor(private api: Api, private cacheDatabase: CacheDatabase, private roomRepository: RoomRepository) { }
 
     start() {
         this.io = new Server(this.api.server, { cors: { origin: "*" } });
@@ -24,7 +25,7 @@ export class Websocket {
     }
 
     createRoomChannel() {
-        const room = new Room(this, this.cacheDatabase);
+        const room = new Room(this, this.cacheDatabase, this.roomRepository);
         room.listen();
      }
 

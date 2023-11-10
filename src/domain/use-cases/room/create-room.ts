@@ -1,3 +1,4 @@
+import { randomInt } from "crypto";
 import { CacheDatabase } from "../../../infra/data/interfaces/cache-database";
 import { Room } from "../../../infra/websocket/channel/room/room";
 import { Room as RoomModel} from "../../interfaces/entities/room/room";
@@ -13,6 +14,7 @@ export class CreateRoom implements CreateRoomUseCase {
 
   async execute(room: RoomModel): Promise<any> {
     try {
+      room.song = room?.listSongs ? room.listSongs[randomInt(0, room.listSongs.length - 1)] : undefined;
       const roomStringfied = JSON.stringify(room);
       const roomList = await this.roomRepository.getAllRooms();
       if (roomList.includes(room.name)) {

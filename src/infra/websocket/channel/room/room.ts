@@ -4,12 +4,14 @@ import { Room as RoomType } from '../../../../domain/interfaces/entities/room/ro
 import { CacheDatabase } from '../../../data/interfaces/cache-database';
 import { Player } from '../../../../domain/interfaces/entities/player/player';
 import { Cronometer } from './cronometer';
+import { SetArtist } from '../../../../domain/use-cases/room/set-artist';
+import { RoomRepository } from '../../../../domain/interfaces/repositories/room-repository';
+import { ChooseSongRoom } from '../../../../domain/use-cases/room/choose-song-room';
+import { AddScoreToPlayer } from '../../../../domain/use-cases/room/add-score-to-player';
 
 export class Room {
 
-  private static roomName: string;
-
-  constructor(private websocket: Websocket, private cacheDataBase: CacheDatabase) { }
+  constructor(private websocket: Websocket, private cacheDataBase: CacheDatabase, private roomRepository: RoomRepository) { }
 
   public listen(): void {
     console.log('channel de room criado')
@@ -49,21 +51,19 @@ export class Room {
         socket.leave(roomName);
       });
 
-      socket.on('cronometer', async (roomName: string, room: RoomType) => {
-        const cronometer = new Cronometer(this.websocket.getIo(), room);
+      socket.on('cronometer', async (room: RoomType) => {
+        const cronometer = new Cronometer(
+          this.websocket.getIo(),
+          room,
+          new SetArtist(this.roomRepository),
+          new ChooseSongRoom(this.roomRepository));
         cronometer.start();
       });
 
-      socket.on('break-timer', async (roomName: string) => {
-        const room = await this.cacheDataBase.recover(roomName);
-        const roomParsed = JSON.parse(room);
-        roomParsed.breakMatch = true;
-        await this.cacheDataBase.save(roomName, JSON.stringify(roomParsed));
-        setTimeout(async () => {
-          roomParsed.breakMatch = false;
-          await this.cacheDataBase.save(roomName, JSON.stringify(roomParsed));
-          socket.to(roomName).emit(`start-game`);
-        }, roomParsed.roundInterval * 1000);
+      socket.on('update-score', async (roomName: string, userName: string, score: number) => {
+        const addScoreToPayer = new AddScoreToPlayer(this.roomRepository);
+        const room = await addScoreToPayer.execute(roomName, userName, score);
+        socket.to(roomName).emit(`update-players`, room);
       });
 
       socket.on('disconnect', () => {

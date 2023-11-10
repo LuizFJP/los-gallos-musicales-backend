@@ -4,5 +4,5 @@ export interface Player {
   score?: number;
   wins?: number;
   avatar?: string; 
-  artirst?: boolean;
+  artist?: boolean;
 }

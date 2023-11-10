@@ -1,4 +1,4 @@
-import { ListSongsDTO } from "../../../dto/playlist/Song";
+import { SongDTO } from "../../../dto/playlist/Song";
 import { Player } from "../player/player";
 
 export interface Room {
@@ -9,8 +9,9 @@ export interface Room {
   round?: number,
   maxPlayers?: number,
   currentPlayers?:number,
-  listSongs?: ListSongsDTO[],
+  listSongs?: SongDTO[],
   roundDuration?:number,
   roundInterval?:number,
   breakMatch?:boolean,
+  song?: SongDTO,
 }
