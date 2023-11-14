@@ -3,13 +3,17 @@ import { CreateRoomUseCase } from "../../domain/interfaces/use-cases/room/create
 import { EnterRoomUserCase } from "../../domain/interfaces/use-cases/room/enter-room-use-case";
 import { GetAllRoomsUseCase } from "../../domain/interfaces/use-cases/room/get-all-rooms";
 import { GetRoomUseCase } from "../../domain/interfaces/use-cases/room/get-room-use-case";
+import { CheckRoomIsFullUseCase } from "../../domain/interfaces/use-cases/room/check-room-is-full-use-case";
+import { GetAllRoomData } from "../../domain/use-cases/room/get-all-room-data";
 
 
 export function RoomRouter(
   createRoom: CreateRoomUseCase,
   enterRoom: EnterRoomUserCase,
   getAllRooms: GetAllRoomsUseCase,
-  getRoom: GetRoomUseCase
+  getRoom: GetRoomUseCase,
+  checkRoomIsFull: CheckRoomIsFullUseCase,
+  getAllRoomData: GetAllRoomData
 ) {
 
   const router = Router();
@@ -40,6 +44,16 @@ export function RoomRouter(
 
   router.get('/all', async (req, res) => {
     const rooms = await getAllRooms.execute();
+    res.json({ rooms });
+  });
+
+  router.get('/check-full', async (req, res) => {
+    const isFull = await checkRoomIsFull.execute(req.query.name as string);
+    res.json({ isFull });
+  });
+
+  router.get('/all-data', async (req, res) => {
+    const rooms = await getAllRoomData.execute();
     res.json({ rooms });
   });
 

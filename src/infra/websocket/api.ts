@@ -19,7 +19,6 @@ import { GetAllRoom } from "../../domain/use-cases/room/get-all-room";
 import { RoomRepositoryImpl } from "../../domain/repositories/room-repository";
 import { CacheDatabase } from "../data/interfaces/cache-database";
 import { Websocket } from "./websocket";
-import { SavePlayerInRoom } from "../../domain/use-cases/room/save-player-in-room";
 import { SecurityRoute } from "../../presentation/routers/security-router";
 import { EncryptUsername } from "../../domain/use-cases/security/encrypt-username-use-case";
 import { DecryptUsername } from "../../domain/use-cases/security/decrypt-username-use-case";
@@ -27,6 +26,8 @@ import { SecurityCipher } from "../../domain/model/security/security";
 import { GetRoom } from "../../domain/use-cases/room/get-room";
 import { RoomRepository } from "../../domain/interfaces/repositories/room-repository";
 import { VerifyPlayerName } from "../../domain/use-cases/player/verify-player-name-use-case";
+import { CheckRoomIsFull } from "../../domain/use-cases/room/check-room-is-full";
+import { GetAllRoomData } from "../../domain/use-cases/room/get-all-room-data";
 
 export class Api {
     public app: Application;
@@ -68,7 +69,9 @@ export class Api {
                 new CreateRoom(this.roomRepository),
                 new EnterRoom(this.roomRepository),
                 new GetAllRoom(this.roomRepository),
-                new GetRoom(this.roomRepository)
+                new GetRoom(this.roomRepository),
+                new CheckRoomIsFull(this.roomRepository),
+                new GetAllRoomData(this.roomRepository)
             )
         );
         const securityCipher = new SecurityCipher();
@@ -85,7 +88,7 @@ export class Api {
     }
 
     startWebsocket() {
-        this.websocket = new Websocket(this, this.cacheDatase, this.roomRepository);
+        this.websocket = new Websocket(this, this.roomRepository);
         this.websocket.start();
     }
 

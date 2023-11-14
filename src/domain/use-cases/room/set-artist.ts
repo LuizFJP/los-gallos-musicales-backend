@@ -12,9 +12,13 @@ export class SetArtist implements SetArtistUseCase {
     const roomParsed = JSON.parse(room) as Room;
     if (roomParsed.players) {
       const id = roomParsed.players.findIndex((player: Player) => player.artist === true) as number;
-      roomParsed.players[id].artist = false;
-      const next = id + 1 === roomParsed.players.length ? 0 : id + 1;
-      roomParsed.players[next].artist = true;
+      try {
+        roomParsed.players[id].artist = false;
+        const next = id + 1 === roomParsed.players.length ? 0 : id + 1;
+        roomParsed.players[next].artist = true;
+      } catch(error) {
+        throw new Error("Coundn't set artist");
+      }
     }
     await this.roomRepository.create(roomName, JSON.stringify(roomParsed));
     return roomParsed;

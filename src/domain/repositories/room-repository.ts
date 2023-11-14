@@ -15,9 +15,8 @@ export class RoomRepositoryImpl implements RoomRepository {
     return await this.db.recover(roomName);
   }
 
-  public async create(roomName: string, roomBuffered: string): Promise<any> {
+  public async create(roomName: string, roomBuffered: string): Promise<void> {
     await this.db.save(roomName, roomBuffered);
-    return Promise.resolve();
   }
   
   public savePlayerIntoRoom(player: Player, room: string): Promise<any> {
@@ -30,5 +29,10 @@ export class RoomRepositoryImpl implements RoomRepository {
   
   public async getAllRooms(): Promise<string[]> {
     return await this.db.recoverAllKeys();
+  }
+  
+  public async getMultipleDataRooms(roomNames: string[]): Promise<Room[]> {
+    const rooms = await this.db.recoverMultipleValues(roomNames) as string[];
+    return rooms.map(room => JSON.parse(room));
   }
 }

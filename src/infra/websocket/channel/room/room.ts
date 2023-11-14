@@ -1,17 +1,18 @@
-import { Api } from '../../api';
 import { Websocket } from '../../websocket';
 import { Room as RoomType } from '../../../../domain/interfaces/entities/room/room';
-import { CacheDatabase } from '../../../data/interfaces/cache-database';
 import { Player } from '../../../../domain/interfaces/entities/player/player';
 import { Cronometer } from './cronometer';
 import { SetArtist } from '../../../../domain/use-cases/room/set-artist';
 import { RoomRepository } from '../../../../domain/interfaces/repositories/room-repository';
 import { ChooseSongRoom } from '../../../../domain/use-cases/room/choose-song-room';
 import { AddScoreToPlayer } from '../../../../domain/use-cases/room/add-score-to-player';
+import { GiveTip } from '../../../../domain/use-cases/room/give-tip';
+import { EnableTip } from '../../../../domain/use-cases/room/enable-tip';
+import { DecrementNumberOfTips } from '../../../../domain/use-cases/room/decrement-number-of-tips';
 
 export class Room {
 
-  constructor(private websocket: Websocket, private cacheDataBase: CacheDatabase, private roomRepository: RoomRepository) { }
+  constructor(private websocket: Websocket, private roomRepository: RoomRepository) { }
 
   public listen(): void {
     console.log('channel de room criado')
@@ -23,7 +24,7 @@ export class Room {
       socket.join(roomName as string);
 
       socket.on(`update-players`, async (roomName: string) => {
-        const room = await this.cacheDataBase.recover(roomName);
+        const room = await this.roomRepository.get(roomName);
         const roomParsed = JSON.parse(room);
         socket.to(roomName).emit(`update-players`, roomParsed);
       });
@@ -36,17 +37,18 @@ export class Room {
         const newRoom = { ...room, canvas: room.canvas };
 
         const roomStringify = JSON.stringify(newRoom);
-        await this.cacheDataBase.save(roomName, roomStringify);
+        await this.roomRepository.create(roomName, roomStringify);
       });
 
       socket.on('leave-room', async (roomName: string, username: string) => {
         console.log('saiu da sala', roomName, username)
-        const room = await this.cacheDataBase.recover(roomName);
+        const room = await this.roomRepository.get(roomName);
         const roomParsed = JSON.parse(room);
         const players = roomParsed.players.filter((player: Player) => player.username !== username);
         roomParsed.players = players;
+        roomParsed.numberOfPlayers = roomParsed.numberOfPlayers - 1;
         const roomStringify = JSON.stringify(roomParsed);
-        await this.cacheDataBase.save(roomName, roomStringify);
+        await this.roomRepository.create(roomName, roomStringify);
         socket.to(roomName).emit(`update-players`, roomParsed);
         socket.leave(roomName);
       });
@@ -63,7 +65,14 @@ export class Room {
       socket.on('update-score', async (roomName: string, userName: string, score: number) => {
         const addScoreToPayer = new AddScoreToPlayer(this.roomRepository);
         const room = await addScoreToPayer.execute(roomName, userName, score);
-        socket.to(roomName).emit(`update-players`, room);
+        this.websocket.getIo().in(roomName).emit(`update-players`, room);
+      });
+
+      socket.on('tip', async (roomName: string, tip: string[], tipOn: boolean) => {
+        const roomNumberOfTipsUpdated = await new DecrementNumberOfTips(this.roomRepository).execute(roomName);
+        await new GiveTip(this.roomRepository).execute(roomNumberOfTipsUpdated, tip, tipOn);
+        console.log('tip');
+        this.websocket.getIo().in(roomName).emit(`tip`, tip, roomNumberOfTipsUpdated.numberOfTips, tipOn);
       });
 
       socket.on('disconnect', () => {
@@ -72,3 +81,4 @@ export class Room {
     });
   }
 }
+

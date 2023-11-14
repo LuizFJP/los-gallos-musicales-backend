@@ -3,6 +3,7 @@ import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { Room } from "../../../../domain/interfaces/entities/room/room";
 import { SetArtistUseCase } from "../../../../domain/interfaces/use-cases/room/set-artist-use-case";
 import { ChooseSongRoomUseCase } from "../../../../domain/interfaces/use-cases/room/choose-song-room-use-case";
+import { clear } from "console";
 
 export class Cronometer {
   private timer: number;
@@ -13,20 +14,30 @@ export class Cronometer {
     private chooseSongRoomUseCase: ChooseSongRoomUseCase) { }
 
   public start(): void {
-    this.timer = (this.room.roundDuration as number) * 60;
-    setInterval(async () => {
+    console.log(
+      this.room.roundDuration,
+      this.room.roundInterval,
+    parseFloat(this.room.roundDuration as string) * 60,
+      parseInt(this.room.roundInterval as string)
+    );
+    this.timer = (parseFloat(this.room.roundDuration as string)) * 60;
+    let intervalId = setInterval(async () => {
       if (this.timer === 0) {
         if (this.room.breakMatch) {
-          this.timer = (this.room.roundDuration as number) * 60;
+          this.timer = (parseFloat(this.room.roundDuration as string)) * 60;
           this.room.breakMatch = false;
         } else {
-          // this.timer = (this.room.roundInterval as number) * 60;
-          this.timer = 5;
+          this.timer = parseInt(this.room.roundInterval as string);
           this.room.breakMatch = true;
-          const roomPlayersUpdated = await this.setArtistUseCase.execute(this.room.name);
-          const song = await this.chooseSongRoomUseCase.execute(this.room.name);
-          this.io.in(this.room.name).emit(`update-players`, roomPlayersUpdated);
-          this.io.in(this.room.name).emit(`update-song`, song);
+          try {
+            const roomPlayersUpdated = await this.setArtistUseCase.execute(this.room.name);
+            const roomSongUpdated = await this.chooseSongRoomUseCase.execute(this.room.name);
+            this.io.in(this.room.name).emit(`update-players`, roomPlayersUpdated);
+            this.io.in(this.room.name).emit(`update-song`, roomSongUpdated.song);
+            this.io.in(this.room.name).emit(`tip`, roomSongUpdated.tip, roomSongUpdated.numberOfTips, roomSongUpdated.tipOn);
+          } catch(error) {
+            clearInterval(intervalId);
+          }
         }
       }
       this.timer--;
