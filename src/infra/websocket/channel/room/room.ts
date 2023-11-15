@@ -37,7 +37,6 @@ export class Room {
         const newRoom = { ...room, canvas: room.canvas };
         const roomStringify = JSON.stringify(newRoom);
         await this.roomRepository.create(roomName, roomStringify);
-        console.log('salvou', roomName, roomStringify)
       });
 
       socket.on('leave-room', async (roomName: string, username: string) => {
@@ -49,7 +48,6 @@ export class Room {
         roomParsed.numberOfPlayers = roomParsed.numberOfPlayers - 1;
         const roomStringify = JSON.stringify(roomParsed);
         await this.roomRepository.create(roomName, roomStringify);
-        console.log('saiu da sala', roomName, username)
         socket.to(roomName).emit(`update-players`, roomParsed);
         socket.leave(roomName);
       });

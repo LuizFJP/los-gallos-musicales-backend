@@ -27,7 +27,6 @@ export class CreateRoom implements CreateRoomUseCase {
         return false;
       }
       this.roomRepository.create(room.name, roomStringfied);
-      console.log("chamou no createRoom");
       return room.name
     } catch (error) {
       console.log(error);

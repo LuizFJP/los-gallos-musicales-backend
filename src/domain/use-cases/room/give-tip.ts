@@ -10,6 +10,5 @@ export class GiveTip implements GiveTipUseCase {
     room.tip = tip;
     room.tipOn = tipOn;
     await this.roomRepository.create(room.name, JSON.stringify(room));
-    console.log("chamou no giveTip");
   }
 }

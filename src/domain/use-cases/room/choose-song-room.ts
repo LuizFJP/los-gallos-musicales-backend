@@ -28,7 +28,6 @@ export class ChooseSongRoom implements ChooseSongRoomUseCase {
     roomParsed.tip = new Array(roomParsed.song.name.length).fill('_');
 
     await this.roomRepository.create(roomName, JSON.stringify(roomParsed));
-console.log('chamou no chooseSongRoom');
     return roomParsed;
   }
 }
