@@ -17,6 +17,7 @@ export class EnterRoom implements EnterRoomUserCase {
       roomParsed.numberOfPlayers = roomParsed.numberOfPlayers + 1;
       const roomStringify = JSON.stringify(roomParsed);
       await this.roomRepository.create(roomParsed.name, roomStringify);
+      console.log("chamou no enterRoom");
       return roomParsed;
     } catch (error) {
       return null;

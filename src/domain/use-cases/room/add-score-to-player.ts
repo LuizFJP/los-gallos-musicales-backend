@@ -12,6 +12,7 @@ export class AddScoreToPlayer implements AddScoreToPlayerUseCase {
     console.log(score, score.toFixed(2), Number(score.toFixed(2)));
     player.score += parseFloat(score.toFixed(2));
     await this.roomRepository.create(roomName, JSON.stringify(roomParsed));
+    console.log("chamou no addScoreToPlayer");
     return roomParsed;
   }
 }

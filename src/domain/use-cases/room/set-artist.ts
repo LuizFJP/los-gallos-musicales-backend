@@ -21,6 +21,7 @@ export class SetArtist implements SetArtistUseCase {
       }
     }
     await this.roomRepository.create(roomName, JSON.stringify(roomParsed));
+    console.log("chamou no setArtist");
     return roomParsed;
   }
 

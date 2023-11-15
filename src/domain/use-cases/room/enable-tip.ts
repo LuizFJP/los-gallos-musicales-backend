@@ -10,5 +10,6 @@ export class EnableTip implements EnableTipUseCase {
       const roomParsed = JSON.parse(room);
       roomParsed.tipOn = tipOn;
       await this.roomRepository.create(roomName, JSON.stringify(roomParsed));
+      console.log("chamou no enableTip");
     }
 }

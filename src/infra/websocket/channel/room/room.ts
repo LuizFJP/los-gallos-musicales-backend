@@ -35,9 +35,9 @@ export class Room {
 
       socket.on(`save`, async (roomName: string, room: RoomType) => {
         const newRoom = { ...room, canvas: room.canvas };
-
         const roomStringify = JSON.stringify(newRoom);
         await this.roomRepository.create(roomName, roomStringify);
+        console.log('salvou', roomName, roomStringify)
       });
 
       socket.on('leave-room', async (roomName: string, username: string) => {
@@ -49,6 +49,7 @@ export class Room {
         roomParsed.numberOfPlayers = roomParsed.numberOfPlayers - 1;
         const roomStringify = JSON.stringify(roomParsed);
         await this.roomRepository.create(roomName, roomStringify);
+        console.log('saiu da sala', roomName, username)
         socket.to(roomName).emit(`update-players`, roomParsed);
         socket.leave(roomName);
       });
@@ -71,7 +72,6 @@ export class Room {
       socket.on('tip', async (roomName: string, tip: string[], tipOn: boolean) => {
         const roomNumberOfTipsUpdated = await new DecrementNumberOfTips(this.roomRepository).execute(roomName);
         await new GiveTip(this.roomRepository).execute(roomNumberOfTipsUpdated, tip, tipOn);
-        console.log('tip');
         this.websocket.getIo().in(roomName).emit(`tip`, tip, roomNumberOfTipsUpdated.numberOfTips, tipOn);
       });
 

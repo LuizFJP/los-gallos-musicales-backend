@@ -16,6 +16,7 @@ export class CreateRoom implements CreateRoomUseCase {
     try {
       room.song = room?.listSongs ? room.listSongs[randomInt(0, room.listSongs.length - 1)] : undefined;
       room.numberOfPlayers = 1;
+      room.canvas="";
       room.numberOfTips = Math.ceil(room.song.name.length * 0.25);
       room.tipOn = false;
       room.breakMatch = false;
@@ -26,6 +27,7 @@ export class CreateRoom implements CreateRoomUseCase {
         return false;
       }
       this.roomRepository.create(room.name, roomStringfied);
+      console.log("chamou no createRoom");
       return room.name
     } catch (error) {
       console.log(error);

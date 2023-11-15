@@ -12,6 +12,7 @@ export class SavePlayerInRoom implements SavePlayerInRoomUseCase {
       roomParsed.players!.push(player);
       room = JSON.stringify(roomParsed);
       await this.roomRepository.create(roomName, room);
+      console.log("chamou no savePlayerInRoom");
     } catch (error) {
       throw new Error("Falha ao salvar o player")
     }

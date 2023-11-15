@@ -12,6 +12,7 @@ export class DecrementNumberOfTips implements DecrementNumberOfTipsUseCase {
     roomParsed.numberOfTips = roomParsed.numberOfTips > 0 ? roomParsed.numberOfTips - 1 : 0;
     console.log(roomParsed.numberOfTips, "legal")
     await this.roomRepository.create(roomName, JSON.stringify(roomParsed));
+    console.log("chamou no decrementNumberOfTips");
     const roomUpdated = await this.roomRepository.get(roomName);
     return JSON.parse(roomUpdated);
     
