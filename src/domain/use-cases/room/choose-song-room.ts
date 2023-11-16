@@ -6,28 +6,27 @@ import { ChooseSongRoomUseCase } from "../../interfaces/use-cases/room/choose-so
 export class ChooseSongRoom implements ChooseSongRoomUseCase {
   constructor (private roomRepository: RoomRepository) {}
 
-  public async execute(roomName: string): Promise<Room> {
-    const room = await this.roomRepository.get(roomName);
-    const roomParsed = JSON.parse(room);
+  public async execute(room: Room): Promise<Room> {
 
     let song: SongDTO;
     let index: number; 
-    if (roomParsed.listSongs.length <= 1 ) {
+    if ((room.listSongs as SongDTO[]).length <= 1 ) {
       index = 0;
-      song = roomParsed.listSongs[index];
+      song = (room.listSongs as SongDTO[])[index];
     } else {
-      index = Math.floor(Math.random() * roomParsed.listSongs.length - 1);
-      song = roomParsed.listSongs[index];
+      index = Math.floor(Math.random() * (room.listSongs as SongDTO[]).length - 1);
+      song = (room.listSongs as SongDTO[])[index];
     }
 
-    roomParsed.listSongs = roomParsed.listSongs.filter(
+    room.listSongs = room?.listSongs?.filter(
       (_song: SongDTO, indexSong: number) => indexSong !== index);
-    roomParsed.song = song;
-    roomParsed.numberOfTips = Math.ceil(roomParsed.song.name.length * 0.25);
-    roomParsed.tipOn = false;
-    roomParsed.tip = new Array(roomParsed.song.name.length).fill('_');
+    room.canvas = "";
+    room.song = song;
+    room.numberOfTips = Math.ceil(room.song.name.length * 0.25);
+    room.tipOn = false;
+    room.tip = new Array(room.song.name.length).fill('_');
 
-    await this.roomRepository.create(roomName, JSON.stringify(roomParsed));
-    return roomParsed;
+    await this.roomRepository.create(room.name, JSON.stringify(room));
+    return room;
   }
 }

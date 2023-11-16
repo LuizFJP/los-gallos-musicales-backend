@@ -9,6 +9,7 @@ import { AddScoreToPlayer } from '../../../../domain/use-cases/room/add-score-to
 import { GiveTip } from '../../../../domain/use-cases/room/give-tip';
 import { EnableTip } from '../../../../domain/use-cases/room/enable-tip';
 import { DecrementNumberOfTips } from '../../../../domain/use-cases/room/decrement-number-of-tips';
+import { ClearCanvas } from '../../../../domain/use-cases/room/clear-canvas';
 
 export class Room {
 
@@ -33,9 +34,11 @@ export class Room {
         socket.to(roomName).emit(`draw`, data);
       });
 
-      socket.on(`save`, async (roomName: string, room: RoomType) => {
-        const newRoom = { ...room, canvas: room.canvas };
-        const roomStringify = JSON.stringify(newRoom);
+      socket.on(`save`, async (roomName: string, canvas: string) => {
+        const room = await this.roomRepository.get(roomName);
+        const roomParsed = JSON.parse(room);
+        roomParsed.canvas = canvas;
+        const roomStringify = JSON.stringify(roomParsed);
         await this.roomRepository.create(roomName, roomStringify);
       });
 
@@ -58,6 +61,7 @@ export class Room {
           room,
           new SetArtist(this.roomRepository),
           new ChooseSongRoom(this.roomRepository));
+
         cronometer.start();
       });
 

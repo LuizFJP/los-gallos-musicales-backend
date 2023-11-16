@@ -21,7 +21,8 @@ export class SetArtist implements SetArtistUseCase {
       }
     }
     await this.roomRepository.create(roomName, JSON.stringify(roomParsed));
-    return roomParsed;
+    const roomUpdated = await this.roomRepository.get(roomName);
+    return JSON.parse(roomUpdated);
   }
 
 }

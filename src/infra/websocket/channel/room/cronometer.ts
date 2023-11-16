@@ -3,7 +3,6 @@ import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { Room } from "../../../../domain/interfaces/entities/room/room";
 import { SetArtistUseCase } from "../../../../domain/interfaces/use-cases/room/set-artist-use-case";
 import { ChooseSongRoomUseCase } from "../../../../domain/interfaces/use-cases/room/choose-song-room-use-case";
-import { clear } from "console";
 
 export class Cronometer {
   private timer: number;
@@ -14,12 +13,6 @@ export class Cronometer {
     private chooseSongRoomUseCase: ChooseSongRoomUseCase) { }
 
   public start(): void {
-    console.log(
-      this.room.roundDuration,
-      this.room.roundInterval,
-    parseFloat(this.room.roundDuration as string) * 60,
-      parseInt(this.room.roundInterval as string)
-    );
     this.timer = (parseFloat(this.room.roundDuration as string)) * 60;
     let intervalId = setInterval(async () => {
       if (this.timer === 0) {
@@ -31,8 +24,8 @@ export class Cronometer {
           this.room.breakMatch = true;
           try {
             const roomPlayersUpdated = await this.setArtistUseCase.execute(this.room.name);
-            const roomSongUpdated = await this.chooseSongRoomUseCase.execute(this.room.name);
-            this.io.in(this.room.name).emit(`update-players`, roomPlayersUpdated);
+            const roomSongUpdated = await this.chooseSongRoomUseCase.execute(roomPlayersUpdated);
+            this.io.in(this.room.name).emit(`update-players`, roomSongUpdated);
             this.io.in(this.room.name).emit(`update-song`, roomSongUpdated.song);
             this.io.in(this.room.name).emit(`tip`, roomSongUpdated.tip, roomSongUpdated.numberOfTips, roomSongUpdated.tipOn);
           } catch(error) {
