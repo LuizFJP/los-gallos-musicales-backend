@@ -30,6 +30,7 @@ export function ImageRoute(
   };
 
   router.post("/upload", uploadMiddleware, uploadHandler);
+  
   const downloadHandler: RequestHandler = async (
     req: Request,
     res: Response
