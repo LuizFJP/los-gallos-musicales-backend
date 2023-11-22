@@ -29,6 +29,7 @@ import { VerifyPlayerName } from "../../domain/use-cases/player/verify-player-na
 import { CheckRoomIsFull } from "../../domain/use-cases/room/check-room-is-full";
 import { GetAllRoomData } from "../../domain/use-cases/room/get-all-room-data";
 import { ShareRoom } from "../../domain/use-cases/room/share-room-use-case";
+import { GetRoomByShortId } from "../../domain/use-cases/room/get-room-by-shortid-use-case";
 
 export class Api {
     public app: Application;
@@ -73,7 +74,8 @@ export class Api {
                 new GetRoom(this.roomRepository),
                 new CheckRoomIsFull(this.roomRepository),
                 new GetAllRoomData(this.roomRepository), 
-                new ShareRoom(this.roomRepository)
+                new ShareRoom(this.roomRepository),
+                new GetRoomByShortId(this.roomRepository)
             )
         );
         const securityCipher = new SecurityCipher();

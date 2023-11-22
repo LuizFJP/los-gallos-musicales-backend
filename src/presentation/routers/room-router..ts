@@ -6,6 +6,7 @@ import { GetRoomUseCase } from "../../domain/interfaces/use-cases/room/get-room-
 import { CheckRoomIsFullUseCase } from "../../domain/interfaces/use-cases/room/check-room-is-full-use-case";
 import { GetAllRoomData } from "../../domain/use-cases/room/get-all-room-data";
 import { ShareRoomUseCase } from "../../domain/interfaces/use-cases/room/share-room-use-case";
+import { GetRoomByShortIdUseCase } from "../../domain/interfaces/use-cases/room/get-room-by-shortid-use-case";
 
 
 
@@ -16,7 +17,8 @@ export function RoomRouter(
   getRoom: GetRoomUseCase,
   checkRoomIsFull: CheckRoomIsFullUseCase,
   getAllRoomData: GetAllRoomData,
-  shareRoom: ShareRoomUseCase
+  shareRoom: ShareRoomUseCase,
+  getRoomByShortId: GetRoomByShortIdUseCase
 ) {
 
   const router = Router();
@@ -63,6 +65,11 @@ export function RoomRouter(
   router.post('/share', async (req: Request, res: Response) => {
     const roomShortId = await shareRoom.execute(req.query.name as string);
     res.json(roomShortId);
+  })
+
+  router.get('/share', async (req: Request, res: Response) => {
+    const room = await getRoomByShortId.execute(req.query.shortId as string);
+    res.json(room);
   })
 
   return router;
