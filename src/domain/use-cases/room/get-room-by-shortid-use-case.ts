@@ -9,8 +9,14 @@ export class GetRoomByShortId implements GetRoomByShortIdUseCase {
   async execute(shortId: string) {
     const roomList       = await this.roomRepository.getAllRooms();
     const roomListParsed = JSON.parse(JSON.stringify(roomList));
-    const roomFound      = roomListParsed.find((room: Room) => room.shortId === shortId);
-    console.log(roomFound);
+    let roomFound;
+    for(let i = 0; i < roomListParsed.length; i++) {
+      const room = await this.roomRepository.get(roomListParsed[i]);
+      const roomParsed: Room = JSON.parse(room);
+      if (roomParsed.shortId === shortId) {
+        roomFound =  roomParsed;
+      }
+    }
     return roomFound;
   }
 }
