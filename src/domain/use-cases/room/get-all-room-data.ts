@@ -8,7 +8,6 @@ export class GetAllRoomData implements GetAllRoomDataUseCase {
 
   public async execute(): Promise<Room[]> {
     const roomsName = await this.roomRepository.getAllRooms();
-    console.log(roomsName)
     return await this.roomRepository.getMultipleDataRooms(roomsName);
   }
 }

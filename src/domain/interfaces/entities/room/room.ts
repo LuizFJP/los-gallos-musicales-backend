@@ -1,5 +1,6 @@
 import { SongDTO } from "../../../dto/playlist/Song";
 import { Player } from "../player/player";
+import { Tip } from "./tip";
 
 export interface Room {
   name: string;
@@ -15,7 +16,5 @@ export interface Room {
   roundInterval?:string,
   breakMatch?:boolean,
   song?: SongDTO,
-  tip?: string[],
-  numberOfTips?: number,
-  tipOn?: boolean,
+  tip?: Tip
 }

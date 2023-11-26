@@ -18,7 +18,6 @@ export class Redis implements CacheDatabase {
     public async connect(): Promise<void> {
         await this.redisClient?.connect();
         await this.dump();
-        console.log("redis client created");
     }
 
     public async close() {
