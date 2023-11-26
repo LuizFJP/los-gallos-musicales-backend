@@ -17,6 +17,6 @@ export class GetRoomByShortId implements GetRoomByShortIdUseCase {
         roomFound =  roomParsed;
       }
     }
-    return roomFound;
+    return roomFound as Room;
   }
 }
