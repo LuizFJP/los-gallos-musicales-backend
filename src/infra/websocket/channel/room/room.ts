@@ -52,6 +52,7 @@ export class Room {
         socket.leave(roomName);
       });
 
+
       socket.on('cronometer', async (room: RoomType) => {
         const cronometer = new Cronometer(
           this.websocket.getIo(),
@@ -71,6 +72,10 @@ export class Room {
         const roomNumberOfTipsUpdated = await new DecrementNumberOfTips(this.roomRepository).execute(roomName);
         await new GiveTip(this.roomRepository).execute(roomNumberOfTipsUpdated, tip, tipOn);
         this.websocket.getIo().in(roomName).emit(`tip`, tip, roomNumberOfTipsUpdated.numberOfTips, tipOn);
+      });
+
+      socket.on('report', async (roomName: string, userName: string) =>{
+        
       });
 
       socket.on('disconnect', () => {
