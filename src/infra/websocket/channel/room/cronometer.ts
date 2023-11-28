@@ -27,7 +27,7 @@ export class Cronometer {
             const roomSongUpdated = await this.chooseSongRoomUseCase.execute(roomPlayersUpdated);
             this.io.in(this.room.name).emit(`update-players`, roomSongUpdated);
             this.io.in(this.room.name).emit(`update-song`, roomSongUpdated.song);
-            this.io.in(this.room.name).emit(`tip`, roomSongUpdated.tip, roomSongUpdated.numberOfTips, roomSongUpdated.tipOn);
+            this.io.in(this.room.name).emit(`tip`, roomSongUpdated.tip, roomSongUpdated?.tip?.numberOfTips, roomSongUpdated?.tip?.tipOn);
           } catch(error) {
             clearInterval(intervalId);
           }

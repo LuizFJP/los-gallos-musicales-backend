@@ -1,5 +1,6 @@
 import { SongDTO } from "../../../dto/playlist/song";
 import { Player } from "../player/player";
+import { Tip } from "./tip";
 
 export interface Room {
   name: string;

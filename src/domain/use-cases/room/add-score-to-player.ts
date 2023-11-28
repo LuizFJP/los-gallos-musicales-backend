@@ -9,7 +9,6 @@ export class AddScoreToPlayer implements AddScoreToPlayerUseCase {
     const room = await this.roomRepository.get(roomName);
     const roomParsed = JSON.parse(room);
     const player = roomParsed.players.find((player: any) => player.username === username);
-    console.log(score, score.toFixed(2), Number(score.toFixed(2)));
     player.score += parseFloat(score.toFixed(2));
     await this.roomRepository.create(roomName, JSON.stringify(roomParsed));
     return roomParsed;

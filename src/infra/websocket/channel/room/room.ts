@@ -74,7 +74,7 @@ export class Room {
       socket.on('tip', async (roomName: string, tip: string[], tipOn: boolean) => {
         const roomNumberOfTipsUpdated = await new DecrementNumberOfTips(this.roomRepository).execute(roomName);
         await new GiveTip(this.roomRepository).execute(roomNumberOfTipsUpdated, tip, tipOn);
-        this.websocket.getIo().in(roomName).emit(`tip`, tip, roomNumberOfTipsUpdated.numberOfTips, tipOn);
+        this.websocket.getIo().in(roomName).emit(`tip`, tip, roomNumberOfTipsUpdated?.tip?.numberOfTips, tipOn);
       });
 
       socket.on('disconnect', () => {

@@ -8,7 +8,7 @@ export class EnableTip implements EnableTipUseCase {
     public async execute(roomName: string, tipOn: boolean): Promise<void> {
       const room = await this.roomRepository.get(roomName);
       const roomParsed = JSON.parse(room);
-      roomParsed.tipOn = tipOn;
+      roomParsed.tip.tipOn = tipOn;
       await this.roomRepository.create(roomName, JSON.stringify(roomParsed));
     }
 }
