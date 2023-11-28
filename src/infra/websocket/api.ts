@@ -30,70 +30,77 @@ import { CheckRoomIsFull } from "../../domain/use-cases/room/check-room-is-full"
 import { GetAllRoomData } from "../../domain/use-cases/room/get-all-room-data";
 import { ShareRoom } from "../../domain/use-cases/room/share-room-use-case";
 import { GetRoomByShortId } from "../../domain/use-cases/room/get-room-by-shortid-use-case";
+import { SkipPlayerDraw } from "../../domain/use-cases/player/skip-player-draw";
+import { PlayerRouter } from "../../presentation/routers/player-router";
 
 export class Api {
-    public app: Application;
-    public server: Server;
-    public PORT = 8100;
-    private websocket: Websocket;
-    private roomRepository: RoomRepository = new RoomRepositoryImpl(this.cacheDatase);
+  public app: Application;
+  public server: Server;
+  public PORT = 8100;
+  private websocket: Websocket;
+  private roomRepository: RoomRepository = new RoomRepositoryImpl(
+    this.cacheDatase
+  );
 
-    public constructor(private cacheDatase: CacheDatabase) { }
+  public constructor(private cacheDatase: CacheDatabase) {}
 
-    start() {
-        console.log("server started");
-        this.app = express();
-        this.app.use(cors());
-        this.app.use(express.json());
-        this.server = createServer(this.app);
+  start() {
+    console.log("server started");
+    this.app = express();
+    this.app.use(cors());
+    this.app.use(express.json());
+    this.server = createServer(this.app);
 
-        this.startWebsocket();
+    this.startWebsocket();
 
-        this.app.use(
-            "/genre",
-            GenreRoute(new GetGenres(new GenreRepositoryImpl()))
-        );
-        this.app.use(
-            "/image",
-            ImageRoute(
-                new DownloadAllImages(new ImageRepositoryImpl()),
-                new UploadImage(new ImageRepositoryImpl())
-            )
-        );
-        this.app.use(
-            "/playlist",
-            PlaylistRoute(new GetPlaylists(new PlaylistRepositoryImpl()))
-        );
+    this.app.use(
+      "/genre",
+      GenreRoute(new GetGenres(new GenreRepositoryImpl()))
+    );
+    this.app.use(
+      "/image",
+      ImageRoute(
+        new DownloadAllImages(new ImageRepositoryImpl()),
+        new UploadImage(new ImageRepositoryImpl())
+      )
+    );
+    this.app.use(
+      "/playlist",
+      PlaylistRoute(new GetPlaylists(new PlaylistRepositoryImpl()))
+    );
 
-        this.app.use(
-            "/room",
-            RoomRouter(
-                new CreateRoom(this.roomRepository),
-                new EnterRoom(this.roomRepository),
-                new GetAllRoom(this.roomRepository),
-                new GetRoom(this.roomRepository),
-                new CheckRoomIsFull(this.roomRepository),
-                new GetAllRoomData(this.roomRepository), 
-                new ShareRoom(this.roomRepository),
-                new GetRoomByShortId(this.roomRepository)
-            )
-        );
-        const securityCipher = new SecurityCipher();
-        this.app.use(
-            "/security",
-            SecurityRoute(
-                new EncryptUsername(securityCipher),
-                new DecryptUsername(securityCipher),
-                new VerifyPlayerName(this.roomRepository)
-            )
-        );
+    this.app.use(
+      "/room",
+      RoomRouter(
+        new CreateRoom(this.roomRepository),
+        new EnterRoom(this.roomRepository),
+        new GetAllRoom(this.roomRepository),
+        new GetRoom(this.roomRepository),
+        new CheckRoomIsFull(this.roomRepository),
+        new GetAllRoomData(this.roomRepository),
+        new ShareRoom(this.roomRepository),
+        new GetRoomByShortId(this.roomRepository)
+      )
+    );
+    this.app.use(
+      "/player",
+      PlayerRouter(new SkipPlayerDraw(this.roomRepository))
+    );
+    const securityCipher = new SecurityCipher();
+    this.app.use(
+      "/security",
+      SecurityRoute(
+        new EncryptUsername(securityCipher),
+        new DecryptUsername(securityCipher),
+        new VerifyPlayerName(this.roomRepository)
+      )
+    );
 
-        this.server.listen(this.PORT);
-    }
+    this.server.listen(this.PORT);
+  }
 
-    startWebsocket() {
-        this.websocket = new Websocket(this, this.roomRepository);
-        this.websocket.start();
-    }
-
+  startWebsocket() {
+    this.websocket = new Websocket(this, this.roomRepository);
+    this.websocket.start();
+  }
 }

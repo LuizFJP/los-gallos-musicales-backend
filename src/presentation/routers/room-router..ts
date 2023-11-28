@@ -18,7 +18,7 @@ export function RoomRouter(
   checkRoomIsFull: CheckRoomIsFullUseCase,
   getAllRoomData: GetAllRoomData,
   shareRoom: ShareRoomUseCase,
-  getRoomByShortId: GetRoomByShortIdUseCase
+  getRoomByShortId: GetRoomByShortIdUseCase,
 ) {
 
   const router = Router();
@@ -65,12 +65,12 @@ export function RoomRouter(
   router.post('/share', async (req: Request, res: Response) => {
     const roomShortId = await shareRoom.execute(req.query.name as string);
     res.json(roomShortId);
-  })
+  });
 
   router.get('/share', async (req: Request, res: Response) => {
     const room = await getRoomByShortId.execute(req.query.shortId as string);
     res.json(room);
-  })
+  });
 
   return router;
 }
