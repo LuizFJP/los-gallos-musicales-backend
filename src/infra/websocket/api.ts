@@ -30,9 +30,6 @@ import { CheckRoomIsFull } from "../../domain/use-cases/room/check-room-is-full"
 import { GetAllRoomData } from "../../domain/use-cases/room/get-all-room-data";
 import { ShareRoom } from "../../domain/use-cases/room/share-room-use-case";
 import { GetRoomByShortId } from "../../domain/use-cases/room/get-room-by-shortid-use-case";
-import { SkipPlayerDraw } from "../../domain/use-cases/player/skip-player-draw";
-import { PlayerRouter } from "../../presentation/routers/player-router";
-import { SetArtist } from "../../domain/use-cases/room/set-artist";
 
 export class Api {
   public app: Application;
@@ -81,14 +78,6 @@ export class Api {
         new GetAllRoomData(this.roomRepository),
         new ShareRoom(this.roomRepository),
         new GetRoomByShortId(this.roomRepository)
-      )
-    );
-    
-    this.app.use(
-      "/player",
-      PlayerRouter(
-        new SkipPlayerDraw(this.roomRepository),
-        new SetArtist(this.roomRepository)
       )
     );
 
