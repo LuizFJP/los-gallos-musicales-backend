@@ -10,6 +10,7 @@ import { GiveTip } from '../../../../domain/use-cases/room/give-tip';
 import { EnableTip } from '../../../../domain/use-cases/room/enable-tip';
 import { DecrementNumberOfTips } from '../../../../domain/use-cases/room/decrement-number-of-tips';
 import { ClearCanvas } from '../../../../domain/use-cases/room/clear-canvas';
+import { SkipPlayerDraw } from '../../../../domain/use-cases/player/skip-player-draw';
 
 export class Room {
 
@@ -55,14 +56,17 @@ export class Room {
         socket.leave(roomName);
       });
 
-      socket.on('cronometer', async (room: RoomType) => {
+      socket.on('cronometer', async (room: RoomType, skipMatch: boolean) => {
         const cronometer = new Cronometer(
           this.websocket.getIo(),
           room,
           new SetArtist(this.roomRepository),
-          new ChooseSongRoom(this.roomRepository));
-
-        cronometer.start();
+          new ChooseSongRoom(this.roomRepository),
+          new SkipPlayerDraw(this.roomRepository));
+          if(skipMatch) {
+            cronometer.skipMatch();
+          }
+          cronometer.start();
       });
 
       socket.on('update-score', async (roomName: string, userName: string, score: number) => {
