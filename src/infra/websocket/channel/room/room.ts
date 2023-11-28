@@ -34,6 +34,18 @@ export class Room {
         socket.to(roomName).emit(`draw`, data);
       });
 
+      socket.on('brushSizeChange', (roomName: string, size: number) => {
+        socket.to(roomName).emit('brushSizeChange', size );
+      });
+      
+      socket.on('eraserActivatedChange', (roomName: string, eraserActivated: boolean) => {
+        socket.to(roomName).emit('eraserActivatedChange', eraserActivated );
+      });
+
+      socket.on('brushColorChange', (roomName: string, color: string) => {
+        socket.to(roomName).emit('brushColorChange', color );
+      });
+
       socket.on(`save`, async (roomName: string, canvas: string) => {
         const room = await this.roomRepository.get(roomName);
         const roomParsed = JSON.parse(room);
